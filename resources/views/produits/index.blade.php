@@ -3,20 +3,23 @@
 @section('title', 'Mes Produits')
 
 @section('content')
-<div class="admin-dashboard-wrapper min-vh-100 py-5" style="background: transparent; color: #1e293b; padding-top: 15rem;">
-    <div class="container-fluid px-5 py-4">
-        <div class="d-flex justify-content-between align-items-end mb-5 animate-in">
-            <div class="glass-container p-4 rounded-5 border border-white border-opacity-50">
+<div class="admin-dashboard-wrapper min-vh-100 py-5" style="background: transparent; color: #1e293b;">
+    <div class="d-block d-md-none" style="height: 80px; width: 100%;"></div>
+    <div class="d-none d-md-block" style="height: 200px; width: 100%;"></div>
+    
+    <div class="container-fluid px-3 px-md-5 py-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4 mb-md-5 gap-4 animate-in">
+            <div class="glass-container p-4 rounded-5 border border-white border-opacity-50 w-100">
                 <p class="text-secondary small ls-2 text-uppercase mb-2 fw-bold" style="letter-spacing: 4px;">Mon Inventaire</p>
-                <h1 class="display-3 fw-bold mb-0 text-dark">Mes Produits.</h1>
+                <h1 class="display-5 display-md-3 fw-bold mb-0 text-dark">Mes Produits.</h1>
                 <p class="fs-5 text-muted mt-3 fw-medium">Gérez votre catalogue de saveurs disponibles sur <span class="text-primary">Eat&Drink</span>.</p>
             </div>
-            <div class="text-end pb-3">
-                <div class="d-flex gap-3">
-                    <a href="{{ route('produits.create') }}" class="btn btn-glass-auth shadow-sm fw-bold">
+            <div class="pb-3 w-100 d-md-flex justify-content-end">
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="{{ route('produits.create') }}" class="btn btn-glass-auth shadow-sm fw-bold flex-grow-1 flex-md-grow-0 text-center">
                         <i class="bi bi-plus-circle me-2"></i>NOUVEAU PRODUIT
                     </a>
-                    <a href="{{ route('stands.index') }}" class="btn btn-glass-auth shadow-sm fw-bold">
+                    <a href="{{ route('stands.index') }}" class="btn btn-glass-auth shadow-sm fw-bold flex-grow-1 flex-md-grow-0 text-center">
                         <i class="bi bi-shop me-2"></i>RETOUR AUX STANDS
                     </a>
                 </div>
@@ -51,16 +54,16 @@
                                 </div>
                             @endif
 
-                            <div class="p-5">
-                                <div class="d-flex justify-content-between align-items-start mb-3">
-                                    <h3 class="fw-bold text-dark mb-0">{{ $product->nom }}</h3>
-                                    <div class="text-secondary small">
+                            <div class="p-3 p-md-5">
+                                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start mb-3 gap-2">
+                                    <h3 class="fw-bold text-dark mb-0 pe-2">{{ $product->nom }}</h3>
+                                    <div class="text-secondary small mt-1 mt-md-0">
                                         <i class="bi bi-shop me-1 text-primary"></i>{{ $product->stand->nom_stand }}
                                     </div>
                                 </div>
                                 <p class="text-secondary mb-4">{{ Str::limit($product->description, 100) }}</p>
 
-                                <div class="d-flex gap-3 pt-3 border-top border-white border-opacity-50">
+                                <div class="d-flex flex-column flex-md-row gap-2 gap-md-3 pt-3 border-top border-white border-opacity-50">
                                     <a href="{{ route('produits.edit', $product) }}" class="btn btn-glass-auth flex-grow-1 text-center py-2">
                                         <i class="bi bi-pencil me-1"></i> MODIFIER
                                     </a>
@@ -140,6 +143,12 @@
     @keyframes slideIn {
         from { opacity: 0; transform: translateY(40px); }
         to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 767px) {
+        .glass-container.p-5 {
+            padding: 1.25rem !important;
+        }
     }
 </style>
 @endsection

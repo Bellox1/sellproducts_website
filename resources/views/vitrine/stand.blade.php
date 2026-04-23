@@ -4,25 +4,25 @@
 @section('title', $stand->nom_stand . ' - Vitrine')
 
 @section('content')
-    <div class="vitrine-wrapper py-5">
-        <div class="px-5">
+    <div class="vitrine-wrapper py-2">
+        <div class="d-block d-md-none" style="height: 80px; width: 100%;"></div>
+        <div class="d-none d-md-block" style="height: 30px; width: 100%;"></div>
+        <div class="px-3 px-md-5">
             <!-- Return & Stand Header Row -->
-            <div class="d-flex align-items-center justify-content-between mb-5 animate-in">
-                <div class="d-flex align-items-center">
-                    <a href="{{ route('vitrine.index') }}#stands" class="btn btn-glass-dark px-4 rounded-pill me-4">
-                        <i class="bi bi-arrow-left me-2"></i> Retour
-                    </a>
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 mb-md-5 gap-3 animate-in">
+                <a href="{{ route('vitrine.index') }}#stands" class="btn btn-glass-dark px-4 rounded-pill text-nowrap mb-2 mb-md-0">
+                    <i class="bi bi-arrow-left me-2"></i> Retour
+                </a>
 
-                    <div class="d-flex align-items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#e74c3c"
-                            viewBox="0 0 24 24" class="me-3">
-                            <path d="M12 2L1 8v8l11 6 11-6V8L12 2zm0 2.8L20 9v6l-8 4.4-8-4.4V9l8-4.2z" />
-                            <path d="M12 12l-5-2.5V15l5 2.5 5-2.5V9.5L12 12z" />
-                        </svg>
-                        <div>
-                            <h1 class="h4 mb-0 fw-bold d-inline-block me-2">{{ $stand->nom_stand }}</h1>
-                            <span class="text-muted small">| Par <strong>{{ $stand->user->name }}</strong></span>
-                        </div>
+                <div class="d-flex align-items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#e74c3c"
+                        viewBox="0 0 24 24" class="me-3 flex-shrink-0">
+                        <path d="M12 2L1 8v8l11 6 11-6V8L12 2zm0 2.8L20 9v6l-8 4.4-8-4.4V9l8-4.2z" />
+                        <path d="M12 12l-5-2.5V15l5 2.5 5-2.5V9.5L12 12z" />
+                    </svg>
+                    <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center">
+                        <h1 class="h5 h4-md mb-0 fw-bold me-md-2" style="font-size: 1.25rem;">{{ $stand->nom_stand }}</h1>
+                        <span class="text-muted small mt-1 mt-md-0"><span class="d-none d-md-inline">|</span> Par <strong>{{ $stand->user->name }}</strong></span>
                     </div>
                 </div>
             </div>
@@ -234,18 +234,39 @@
             }
         }
 
-        @media (max-width: 768px) {
-            .stands-masonry-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
         .premium-product-card {
             border-radius: 40px !important;
             overflow: hidden;
             background: rgba(255, 255, 255, 0.4) !important;
             backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        }
+
+        @media (max-width: 768px) {
+            .stands-masonry-grid {
+                grid-template-columns: 1fr;
+            }
+            .vitrine-wrapper {
+                padding: 0 !important;
+            }
+            h1.h4 {
+                font-size: 1.5rem !important;
+            }
+            .display-5 {
+                font-size: 2rem !important;
+            }
+            .glass-desc-box {
+                padding: 1rem !important;
+            }
+            .video-scroll-container {
+                display: none; /* Often too complex for small mobile screens, or needs specific mobile adjustment */
+            }
+            .card-body.p-4 {
+                padding: 1.25rem !important;
+            }
+            .premium-product-card {
+                border-radius: 20px !important;
+            }
         }
 
         .card-img-container {
@@ -363,6 +384,13 @@
         
         window.addEventListener('scroll', () => {
             if (navbar && videoSection) {
+                // If it's hidden via display: none (like on mobile), do nothing
+                if (window.getComputedStyle(videoSection).display === 'none') {
+                    // Make sure navbar is visible on mobile despite scrolling
+                    navbar.style.transform = 'translateY(0)';
+                    return;
+                }
+
                 const videoTop = videoSection.offsetTop;
                 if (window.scrollY > videoTop - 100) {
                     navbar.style.transform = 'translateY(-100%)';

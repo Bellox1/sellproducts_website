@@ -35,3 +35,6 @@ Ce projet Laravel implémente un **CRUD complet pour les produits**, sécurisé 
 Ajout du champ `role` :
 ```php
 $table->enum('role', ['admin', 'entrepreneur_en_attente', 'entrepreneur_approuve'])->default('entrepreneur_en_attente');
+
+
+[![committers.top badge](https://user-badge.committers.top/benin/Bellox1.svg)](https://user-badge.committers.top/benin/Bellox1)

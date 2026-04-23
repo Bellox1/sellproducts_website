@@ -3,16 +3,19 @@
 @section('title', 'Modifier le produit')
 
 @section('content')
-<div class="admin-dashboard-wrapper min-vh-100 py-5" style="background: transparent; color: #1e293b; padding-top: 15rem;">
-    <div class="container-fluid px-5 py-4">
-        <div class="d-flex justify-content-between align-items-end mb-5 animate-in">
-            <div class="glass-container p-4 rounded-5 border border-white border-opacity-50">
+<div class="admin-dashboard-wrapper min-vh-100 py-5" style="background: transparent; color: #1e293b;">
+    <div class="d-block d-md-none" style="height: 80px; width: 100%;"></div>
+    <div class="d-none d-md-block" style="height: 200px; width: 100%;"></div>
+    
+    <div class="container-fluid px-3 px-md-5 py-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4 mb-md-5 animate-in">
+            <div class="glass-container p-3 p-md-4 rounded-5 border border-white border-opacity-50 mb-3 mb-md-0">
                 <p class="text-secondary small ls-2 text-uppercase mb-2 fw-bold" style="letter-spacing: 4px;">Inventaire</p>
-                <h1 class="display-3 fw-bold mb-0 text-dark">Modifier Produit.</h1>
-                <p class="fs-5 text-muted mt-3 fw-medium">Adaptez les informations de l'article <span class="text-primary">{{ $produit->nom }}</span>.</p>
+                <h1 class="display-5 display-md-3 fw-bold mb-0 text-dark">Modifier Produit.</h1>
+                <p class="fs-6 fs-md-5 text-muted mt-3 fw-medium">Adaptez les informations de l'article <span class="text-primary">{{ $produit->nom }}</span>.</p>
             </div>
-            <div class="text-end pb-3">
-                <a href="{{ route('produits.index') }}" class="btn btn-glass-auth shadow-sm fw-bold">
+            <div class="text-start text-md-end pb-3">
+                <a href="{{ route('produits.index') }}" class="btn btn-glass-auth shadow-sm fw-bold w-100 w-md-auto d-inline-block py-2">
                     <i class="bi bi-arrow-left me-2"></i>ANNULER
                 </a>
             </div>
@@ -94,8 +97,8 @@
                 </div>
             </div>
 
-            <div class="d-flex justify-content-end gap-3 mt-5">
-                <button type="submit" class="btn btn-glass-auth px-5 py-3 fw-bold">
+            <div class="d-flex justify-content-end gap-3 mt-4 mt-md-5">
+                <button type="submit" class="btn btn-glass-auth w-100 w-md-auto px-4 px-md-5 py-2 py-md-3 fw-bold">
                     <i class="bi bi-arrow-repeat me-2"></i>METTRE À JOUR LE PRODUIT
                 </button>
             </div>

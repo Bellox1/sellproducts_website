@@ -502,6 +502,111 @@
             opacity: 0.5;
             font-size: 0.9rem;
         }
+
+        /* ===================== RESPONSIVE MOBILE ===================== */
+        @media (max-width: 768px) {
+
+            /* Navbar */
+            .navbar-toggler {
+                border: 1px solid rgba(0,0,0,0.2) !important;
+                padding: 6px 10px;
+            }
+            .navbar-toggler-icon {
+                filter: none;
+                transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            }
+            /* Modification : Croix personnalisée et asymétrique ultra-épurée */
+            .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
+                background-image: none !important;
+                position: relative;
+            }
+            .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon::before,
+            .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon::after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                background-color: #000; /* Noir épuré */
+                border-radius: 20px;
+                transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            }
+            
+            /* La longue barre (impression d'élan/zoom) */
+            .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon::before {
+                width: 32px;
+                height: 2px;
+                transform: translate(-50%, -50%) rotate(35deg); /* Angle incliné */
+            }
+            
+            /* La barre courte (les pieds courts) */
+            .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon::after {
+                width: 18px;
+                height: 2px;
+                margin-left: 5px; /* Décalage pour l'effet de perspective */
+                transform: translate(-50%, -50%) rotate(-50deg);
+            }
+            body.intro-active .navbar:not(.scrolled) .navbar-toggler-icon {
+                filter: invert(1);
+            }
+            body.intro-active .navbar:not(.scrolled) .navbar-toggler {
+                border-color: rgba(255,255,255,0.4) !important;
+            }
+
+            .navbar-collapse {
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(20px);
+                border-radius: 16px;
+                margin-top: 10px;
+                padding: 16px;
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            }
+
+            .navbar-collapse .nav-link,
+            .navbar-collapse .btn {
+                color: #333 !important;
+                padding: 10px 16px !important;
+            }
+
+            .navbar-brand {
+                font-size: 1.4rem !important;
+            }
+
+            /* Hero section */
+            .hero-section {
+                min-height: 100svh;
+            }
+
+            .auth-hero-section {
+                padding-top: 8rem;
+                padding-bottom: 4rem;
+            }
+
+            .auth-hero-section h1 {
+                font-size: 2rem;
+            }
+
+            /* Footer */
+            footer {
+                border-radius: 40px 40px 0 0;
+                padding: 60px 0 40px;
+            }
+
+            .footer-title {
+                font-size: 1.8rem;
+            }
+
+            /* Sound toggle */
+            .sound-toggle {
+                bottom: 15px;
+                right: 15px;
+                width: 44px !important;
+                height: 44px !important;
+            }
+
+            .sound-toggle i {
+                font-size: 1.2rem;
+            }
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -600,7 +705,8 @@
                 <div class="container">
                     @if (auth()->user()->role == 'admin')
                         <h1 class="display-4 fw-bold">Bienvenue, Administrateur !</h1>
-                        <p class="lead text-secondary">Gérez les stands, les utilisateurs et l'ensemble de la plateforme Eat&Drink.</p>
+                        <p class="lead text-secondary">Gérez les stands, les utilisateurs et l'ensemble de la plateforme
+                            Eat&Drink.</p>
                         <a href="{{ route('admin.index') }}" class="btn btn-glass-auth mt-3">Accéder au tableau de bord</a>
                     @elseif(auth()->user()->role == 'entrepreneur_en_attente')
                         <h1 class="display-4 fw-bold">Bienvenue, Entrepreneur !</h1>
@@ -713,7 +819,7 @@
                             const endY = centerY - imgCenterY;
                             img.style.transition = "all 0.8s cubic-bezier(0.7, 0, 0.3, 1)";
                             img.style.transform =
-                            `translate(${endX}px, ${endY}px) scale(0)`;
+                                `translate(${endX}px, ${endY}px) scale(0)`;
                             img.style.opacity = "0";
                         }, i * 80);
                     });

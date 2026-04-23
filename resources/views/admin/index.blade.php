@@ -3,20 +3,22 @@
 @section('title', 'Centre de Contrôle - Admin')
 
 @section('content')
-    <div class="admin-dashboard-wrapper min-vh-100 py-5" style="background: transparent; color: #1e293b; padding-top: 15rem;">
-
-        <div class="container-fluid px-5 py-4">
-            <div class="d-flex justify-content-between align-items-end mb-5 animate-in">
-                <div class="glass-container p-4 rounded-5 border border-white border-opacity-50">
+    <div class="admin-dashboard-wrapper min-vh-100 py-5" style="background: transparent; color: #1e293b;">
+        <div class="d-block d-md-none" style="height: 80px; width: 100%;"></div>
+        <div class="d-none d-md-block" style="height: 200px; width: 100%;"></div>
+        
+        <div class="container-fluid px-3 px-md-5 py-4">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4 mb-md-5 gap-4 animate-in">
+                <div class="glass-container p-3 p-md-4 rounded-5 border border-white border-opacity-50">
                     <p class="text-secondary small ls-2 text-uppercase mb-2 fw-bold" style="letter-spacing: 4px;">Centre de
                         Contrôle</p>
-                    <h1 class="display-3 fw-bold mb-0 text-dark">Espace Admin.</h1>
+                    <h1 class="display-5 display-md-3 fw-bold mb-0 text-dark">Espace Admin.</h1>
                     <p class="fs-5 text-muted mt-3 fw-medium">Gérez les stands, les utilisateurs et l'ensemble de la
                         plateforme <span class="text-primary">Eat&Drink</span>.</p>
                 </div>
-                <div class="text-end pb-3">
+                <div class="text-start text-md-end pb-3">
                     <div class="d-inline-block px-4 py-2 rounded-pill shadow-sm glass-pill border border-white">
-                        <span class="text-secondary small me-2 uppercase ls-1">STATUT:</span>
+                        <span class="text-secondary small me-2 text-uppercase ls-1">STATUT:</span>
                         <span class="text-success small fw-bold"><i class="bi bi-shield-check me-1"></i> OPTIMAL</span>
                     </div>
                 </div>
@@ -25,7 +27,7 @@
             <!-- Real Stats Grid -->
             <div class="row g-4 mb-5 animate-in" style="animation-delay: 0.1s;">
                 <div class="col-md-6">
-                    <div class="glass-container p-5 rounded-5 shadow-sm border border-white">
+                    <div class="glass-container p-4 p-md-5 rounded-5 shadow-sm border border-white">
                         <div class="d-flex justify-content-between mb-4">
                             <div class="icon-box bg-soft-primary">
                                 <i class="bi bi-people fs-2"></i>
@@ -57,7 +59,7 @@
                         Nouvelles Candidatures
                     </h4>
 
-                    <div class="glass-container p-5 rounded-5 shadow-sm border border-white">
+                    <div class="glass-container p-3 p-md-5 rounded-5 shadow-sm border border-white">
                         @if ($pendingRequests->count())
                             <div class="table-responsive">
                                 <table class="table admin-fancy-table align-middle m-0">
@@ -92,15 +94,15 @@
                                                     </div>
                                                 </td>
                                                 <td class="text-end">
-                                                    <div class="d-flex justify-content-end gap-2">
+                                                    <div class="d-flex flex-column flex-md-row justify-content-end gap-2">
                                                         <button
-                                                            class="btn btn-glass-approve rounded-pill px-4 btn-sm fw-bold shadow-sm"
+                                                            class="btn btn-glass-approve rounded-pill px-3 px-md-4 py-2 py-md-1 btn-sm fw-bold shadow-sm"
                                                             data-bs-toggle="modal"
                                                             data-bs-target="#approveModal{{ $request->id }}">
                                                             APPROUVER
                                                         </button>
                                                         <button
-                                                            class="btn btn-glass-reject rounded-pill px-4 btn-sm fw-bold shadow-sm"
+                                                            class="btn btn-glass-reject rounded-pill px-3 px-md-4 py-2 py-md-1 btn-sm fw-bold shadow-sm"
                                                             data-bs-toggle="modal"
                                                             data-bs-target="#rejectModal{{ $request->id }}">
                                                             REJETER
@@ -128,7 +130,7 @@
                         Artisans Certifiés
                     </h4>
 
-                    <div class="glass-container p-4 rounded-5 shadow-sm border border-white">
+                    <div class="glass-container p-3 p-md-4 rounded-5 shadow-sm border border-white">
                         <div class="approved-list overflow-auto px-2" style="max-height: 600px;">
                             @forelse($approvedEntrepreneurs as $entrepreneur)
                                 <div
@@ -320,6 +322,37 @@
 
         ::-webkit-scrollbar {
             width: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .admin-fancy-table thead {
+                display: none;
+            }
+            .admin-fancy-table, .admin-fancy-table tbody, .admin-fancy-table tr, .admin-fancy-table td {
+                display: block;
+                width: 100%;
+            }
+            .admin-fancy-table tr {
+                margin-bottom: 1rem;
+                background: rgba(255,255,255,0.3);
+                border-radius: 1rem;
+                padding: 1rem;
+            }
+            .admin-fancy-table td {
+                text-align: left !important;
+                padding: 0.5rem 0 !important;
+                border: none !important;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .admin-fancy-table td.text-end {
+                align-items: stretch;
+            }
+            .admin-fancy-table td.text-end .btn {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
         }
 
         ::-webkit-scrollbar-track {

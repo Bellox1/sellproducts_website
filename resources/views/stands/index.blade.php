@@ -4,19 +4,19 @@
 
 @section('content')
 <div class="admin-dashboard-wrapper min-vh-100 py-5" style="background: transparent; color: #1e293b; padding-top: 15rem;">
-    <div class="container-fluid px-5 py-4">
-        <div class="d-flex justify-content-between align-items-end mb-5 animate-in">
-            <div class="glass-container p-4 rounded-5 border border-white border-opacity-50">
+    <div class="container-fluid px-3 px-md-5 py-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4 mb-md-5 gap-4 animate-in">
+            <div class="glass-container p-4 rounded-5 border border-white border-opacity-50 w-100">
                 <p class="text-secondary small ls-2 text-uppercase mb-2 fw-bold" style="letter-spacing: 4px;">Mon Commerce</p>
-                <h1 class="display-3 fw-bold mb-0 text-dark">Mes Stands.</h1>
+                <h1 class="display-5 display-md-3 fw-bold mb-0 text-dark">Mes Stands.</h1>
                 <p class="fs-5 text-muted mt-3 fw-medium">Gérez vos points de vente et votre présence sur <span class="text-primary">Eat&Drink</span>.</p>
             </div>
-            <div class="text-end pb-3">
-                <div class="d-flex gap-3">
-                    <a href="{{ route('stands.create') }}" class="btn btn-glass-auth shadow-sm fw-bold">
+            <div class="pb-3 w-100 d-md-flex justify-content-end">
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="{{ route('stands.create') }}" class="btn btn-glass-auth shadow-sm fw-bold flex-grow-1 flex-md-grow-0 text-center">
                         <i class="bi bi-plus-circle me-2"></i>NOUVEAU STAND
                     </a>
-                    <a href="{{ route('produits.index') }}" class="btn btn-glass-auth shadow-sm fw-bold">
+                    <a href="{{ route('produits.index') }}" class="btn btn-glass-auth shadow-sm fw-bold flex-grow-1 flex-md-grow-0 text-center">
                         <i class="bi bi-box-seam me-2"></i>MES PRODUITS
                     </a>
                 </div>
@@ -126,6 +126,18 @@
     @keyframes slideIn {
         from { opacity: 0; transform: translateY(40px); }
         to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 767px) {
+        .admin-dashboard-wrapper {
+            padding-top: 8rem !important;
+        }
+        h1.display-4 {
+            font-size: 2rem !important;
+        }
+        .glass-container.p-5 {
+            padding: 1.25rem !important;
+        }
     }
 </style>
 @endsection

@@ -207,8 +207,29 @@
             width: 100%;
             position: relative;
             padding: 0 80px;
-            /* Space for both side bars */
             transition: all 0.7s ease;
+        }
+
+        @media (max-width: 768px) {
+            .vitrine-wrapper {
+                padding: 0 16px !important;
+            }
+            .vitrine-wrapper.side-active .vitrine-intro-container {
+                position: static !important;
+                width: 100% !important;
+                transform: none !important;
+            }
+            .vitrine-wrapper.side-active .intro-content {
+                transform: none !important;
+            }
+            .vitrine-wrapper.side-active .search-sticky-container {
+                position: static !important;
+                width: 100% !important;
+            }
+            .side-active .search-input-group {
+                position: static !important;
+                max-width: 100% !important;
+            }
         }
 
         /* Staggered Grid (Middle Higher) */
@@ -350,15 +371,28 @@
 
         .vitrine-title {
             font-size: 6.5rem;
-            /* Increased horizontal size */
             font-weight: 800;
-            /* Bolder for black look */
             color: #000 !important;
-            /* Pure black */
             letter-spacing: -3px;
             margin-bottom: 20px;
             transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
             text-transform: uppercase;
+        }
+
+        @media (max-width: 768px) {
+            .vitrine-title {
+                font-size: 2.8rem !important;
+                letter-spacing: -1px;
+            }
+            .search-input {
+                font-size: 1rem !important;
+            }
+            .cinematic-video {
+                height: 300px !important;
+            }
+            .video-wrapper-inner {
+                border-radius: 24px !important;
+            }
         }
 
         .vitrine-desc {
@@ -537,6 +571,13 @@
             const wrapper = document.querySelector('.vitrine-wrapper');
             const video = document.getElementById('video-section');
             if (!wrapper) return;
+
+            // Désactiver l'animation de sidebar sur mobile pour éviter les bugs de scroll/focus
+            if (window.innerWidth <= 768) {
+                wrapper.classList.remove('side-active');
+                wrapper.classList.remove('side-hide');
+                return;
+            }
 
             const scrollPos = window.scrollY;
 

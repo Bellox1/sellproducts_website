@@ -3,10 +3,12 @@
 @section('title', 'Mon Panier')
 
 @section('content')
-<div class="vitrine-wrapper py-5">
-    <div class="px-5">
+<div class="vitrine-wrapper py-2">
+    <div class="d-block d-md-none" style="height: 80px; width: 100%;"></div>
+    <div class="d-none d-md-block" style="height: 30px; width: 100%;"></div>
+    <div class="px-3 px-md-5">
         <!-- Navigation -->
-        <div class="d-flex justify-content-between align-items-center mb-5 animate-in">
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 mb-md-5 gap-3 animate-in">
             <a href="{{ route('vitrine.index') }}#stands" class="btn btn-glass-dark px-4 rounded-pill">
                 <i class="bi bi-arrow-left me-2"></i> Continuer mes délices
             </a>
@@ -28,43 +30,71 @@
                 <div class="col-lg-8">
                     <div class="basket-items-container">
                         @foreach($produits as $item)
-                            <div class="glass-card mb-4 p-4 rounded-5 animate-card shadow-sm border border-white border-opacity-25" style="background: rgba(255,255,255,0.3); backdrop-filter: blur(15px);">
-                                <div class="row align-items-center">
-                                    <div class="col-md-2">
+                            <div class="glass-card position-relative mb-4 p-3 p-md-4 rounded-4 animate-card shadow-sm border border-white border-opacity-25" style="background: rgba(255,255,255,0.3); backdrop-filter: blur(15px); overflow: hidden;">
+                                
+                                <!-- Mobile Absolute Delete Button -->
+                                <div class="position-absolute" style="top: 10px; right: 10px; z-index: 10;">
+                                    <form action="{{ route('commandes.supprimer-du-panier', $item['produit']) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-link text-dark opacity-50 p-2 m-0 bg-white shadow-sm rounded-circle" style="line-height:1;" onclick="return confirm('Retirer ce délice ?')">
+                                            <i class="bi bi-x-lg"></i>
+                                        </button>
+                                    </form>
+                                </div>
+
+                                <div class="d-flex flex-wrap align-items-center">
+                                    
+                                    <!-- Image (Left) -->
+                                    <div class="mb-3 mb-md-0 d-flex justify-content-center" style="width: 80px; flex-shrink: 0;">
                                         @if($item['produit']->image_url)
-                                            <div class="rounded-4 overflow-hidden shadow-sm" style="height: 100px; width: 100px;">
+                                            <div class="rounded-4 overflow-hidden shadow-sm w-100" style="height: 80px;">
                                                 <img src="{{ Str::startsWith($item['produit']->image_url, ['http://', 'https://']) ? $item['produit']->image_url : asset($item['produit']->image_url) }}" 
                                                      class="w-100 h-100 object-fit-cover" alt="{{ $item['produit']->nom }}">
                                             </div>
                                         @else
-                                            <div class="bg-light rounded-4 d-flex align-items-center justify-content-center" style="height: 100px; width: 100px;">
+                                            <div class="bg-light rounded-4 d-flex align-items-center justify-content-center w-100" style="height: 80px;">
                                                 <i class="bi bi-image text-muted opacity-25" style="font-size: 2rem;"></i>
                                             </div>
                                         @endif
                                     </div>
-                                    <div class="col-md-4">
-                                        <h4 class="fw-bold mb-1">{{ $item['produit']->nom }}</h4>
-                                        <span class="badge bg-dark rounded-pill py-2 px-3 fw-normal opacity-50">
-                                            <i class="bi bi-shop me-1"></i> {{ $item['produit']->stand->nom_stand }}
-                                        </span>
+                                    
+                                    <!-- Text (Middle) -->
+                                    <div class="px-3 mb-3 mb-md-0" style="flex-grow: 1; min-width: 150px; padding-right: 45px !important;">
+                                        <h4 class="fw-bold mb-1 fs-5">{{ $item['produit']->nom }}</h4>
+                                        <div class="text-truncate" style="max-width: 100%;">
+                                            <span class="badge bg-dark rounded-pill py-1 px-2 fw-normal opacity-50" style="font-size: 0.75rem;">
+                                                <i class="bi bi-shop me-1"></i> {{ $item['produit']->stand->nom_stand }}
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div class="col-md-2 text-center">
-                                        <div class="text-muted small mb-1">Quantité</div>
-                                        <div class="fw-bold fs-5">{{ $item['quantite'] }}</div>
+
+                                    <!-- Divider on mobile -->
+                                    <div class="w-100 d-block d-md-none border-top border-white border-opacity-50 my-2"></div>
+                                    
+                                    <div class="d-flex justify-content-between align-items-center w-100 d-md-none">
+                                        <div>
+                                            <div class="text-muted small mb-0">Quantité</div>
+                                            <div class="fw-bold fs-5">{{ $item['quantite'] }}</div>
+                                        </div>
+                                        <div class="text-end">
+                                            <div class="text-muted small mb-0">Total</div>
+                                            <div class="fw-bold fs-5">{{ number_format($item['sous_total'], 0, ',', ' ') }} €</div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-2 text-end">
-                                        <div class="text-muted small mb-1">Total</div>
-                                        <div class="fw-bold fs-5">{{ number_format($item['sous_total'], 0, ',', ' ') }} €</div>
+
+                                    <!-- Desktop Grid Layout for stats -->
+                                    <div class="d-none d-md-flex flex-grow-1 justify-content-end align-items-center gap-4">
+                                        <div class="text-center">
+                                            <div class="text-muted small mb-1">Quantité</div>
+                                            <div class="fw-bold fs-5">{{ $item['quantite'] }}</div>
+                                        </div>
+                                        <div class="text-end" style="min-width: 100px;">
+                                            <div class="text-muted small mb-1">Total</div>
+                                            <div class="fw-bold fs-5">{{ number_format($item['sous_total'], 0, ',', ' ') }} €</div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-2 text-end">
-                                        <form action="{{ route('commandes.supprimer-du-panier', $item['produit']) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-link text-dark opacity-25 p-0" onclick="return confirm('Retirer ce délice ?')">
-                                                <i class="bi bi-x-lg"></i>
-                                            </button>
-                                        </form>
-                                    </div>
+
                                 </div>
                             </div>
                         @endforeach
@@ -98,7 +128,7 @@
 
                             <form action="{{ route('commandes.soumettre') }}" method="POST">
                                 @csrf
-                                <button type="submit" class="btn btn-light w-100 py-3 rounded-pill fw-bold fs-5 transition-all hover-scale shadow-lg">
+                                <button type="submit" class="btn btn-light w-100 py-3 rounded-pill fw-bold fs-6 fs-md-5 transition-all hover-scale shadow-lg" style="white-space: normal; line-height: 1.2;">
                                     FINALISER MON EXPÉRIENCE
                                 </button>
                             </form>
@@ -207,6 +237,27 @@
     @keyframes fadeInUp {
         from { opacity: 0; transform: translateY(20px); }
         to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Mobile responsive */
+    @media (max-width: 767px) {
+        .vitrine-wrapper {
+            padding: 0 !important;
+        }
+        .basket-items-container .row {
+            gap: 12px 0;
+        }
+        .basket-items-container .col-md-2,
+        .basket-items-container .col-md-4 {
+            display: flex;
+            align-items: center;
+        }
+        h1.display-5 {
+            font-size: 1.6rem !important;
+        }
+        .p-5.rounded-5 {
+            padding: 1.5rem !important;
+        }
     }
 </style>
 @endsection

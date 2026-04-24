@@ -1,60 +1,43 @@
 @extends('layouts.app')
 
-@section('title', 'Demande de Stand')
+@section('title', 'Réinitialiser le mot de passe')
 
 @section('content')
 <div class="min-vh-100 d-flex align-items-start py-0 py-md-5">
     <div class="vitrine-bg-blobs"></div>
     <div class="container pt-0 pb-5">
         <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <div class="glass-registration-card p-4 animate-in">
+            <div class="col-lg-8">
+                <div class="glass-registration-card p-5 animate-in">
+                    <!-- Branding/Icon -->
+                    <div class="mb-4 text-center">
+                        <h1 class="display-3 fw-bold text-dark mb-0 ls-tight">Nouveau départ.</h1>
+                        <p class="text-muted fs-5 ls-wide text-uppercase">Définissez votre nouveau mot de passe.</p>
+                    </div>
+
                     @if($errors->any())
-                        <div class="alert alert-danger alert-dismissible fade show mb-4 border-0 shadow-sm" style="background: rgba(220,53,69,0.15); border-radius: 20px; backdrop-filter: blur(10px);">
-                            <div class="d-flex align-items-center">
-                                <i class="bi bi-exclamation-circle-fill me-3 fs-4"></i>
-                                <div>
-                                    <strong class="d-block mb-1">Attention !</strong>
-                                    <ul class="mb-0 list-unstyled small">
-                                        @foreach($errors->all() as $error)
-                                            <li><i class="bi bi-dot"></i> {{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            </div>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <div class="alert alert-danger mb-4 border-0 shadow-sm" style="background: rgba(255,0,0,0.05); border-radius: 15px;">
+                            @foreach($errors->all() as $error)
+                                <div class="small mb-1 fw-bold">— {{ $error }}</div>
+                            @endforeach
                         </div>
                     @endif
 
-                    <!-- Branding/Icon -->
-                    <div class="mb-1 text-center">
-                        <h1 class="display-3 fw-bold text-dark mb-0 ls-tight">Créer.</h1>
-                        <p class="text-muted fs-5 ls-wide text-uppercase">Votre héritage artisanal démarre ici.</p>
-                    </div>
-
-                    <form method="POST" action="{{ route('register') }}" class="mt-4">
+                    <form method="POST" action="{{ route('password.update') }}" class="mt-4">
                         @csrf
+                        
+                        <input type="hidden" name="email" value="{{ $email }}">
 
-                        <!-- Principal Info: 3 fields per row -->
-                        <div class="row mb-4">
-                            <div class="col-lg-4 col-md-6 mb-4">
-                                <label for="name" class="text-dark small ls-wide text-uppercase d-block mb-2 opacity-75">Nom Entreprise</label>
-                                <input type="text" class="form-control-premium" id="name" name="name" value="{{ old('name') }}" placeholder="Artisanat & Co" required autofocus>
-                            </div>
-                            <div class="col-lg-4 col-md-6 mb-4">
-                                <label for="email" class="text-dark small ls-wide text-uppercase d-block mb-2 opacity-75">Adresse Email</label>
-                                <input type="email" class="form-control-premium" id="email" name="email" value="{{ old('email') }}" placeholder="ma@boutique.com" required>
-                            </div>
-                            <div class="col-lg-4 col-md-12 mb-4">
-                                <label for="nom_stand" class="text-dark small ls-wide text-uppercase d-block mb-2 opacity-75">Nom du Stand</label>
-                                <input type="text" class="form-control-premium" id="nom_stand" name="nom_stand" value="{{ old('nom_stand') }}" placeholder="Le Stand de..." required>
-                            </div>
+                        <div class="mb-4">
+                            <label class="text-dark small ls-wide text-uppercase d-block mb-2 opacity-75">Code OTP reçu</label>
+                            <input type="text" name="otp" class="form-control-premium text-center fw-bold fs-3" 
+                                   placeholder="123456" maxlength="6" required autofocus>
+                            <small class="text-muted d-block mt-2 text-center">Entrez le code à 6 chiffres envoyé à votre email.</small>
                         </div>
 
-                        <!-- Passwords: 2 fields per row -->
                         <div class="row mb-4">
                             <div class="col-md-6 mb-4">
-                                <label for="password" class="text-dark small ls-wide text-uppercase d-block mb-2 opacity-75">Mot de Passe</label>
+                                <label for="password" class="text-dark small ls-wide text-uppercase d-block mb-2 opacity-75">Nouveau Mot de Passe</label>
                                 <div class="position-relative">
                                     <input type="password" class="form-control-premium" id="password" name="password" placeholder="••••••••" required>
                                     <button type="button" class="btn-toggle-password" onclick="togglePassword('password')">
@@ -73,17 +56,12 @@
                             </div>
                         </div>
 
-                        <div class="mb-5">
-                            <label for="description_stand" class="text-dark small ls-wide text-uppercase d-block mb-2 opacity-75">Votre Histoire</label>
-                            <textarea name="description_stand" id="description_stand" class="form-control-premium" style="min-height: 80px;" placeholder="Quelques mots sur votre passion..."></textarea>
-                        </div>
-
                         <div class="d-flex align-items-center justify-content-between flex-wrap gap-4 mt-5">
                             <button type="submit" class="btn btn-premium-glass px-5">
-                                CRÉER MON STAND <i class="bi bi-plus-lg ms-2"></i>
+                                RÉINITIALISER <i class="bi bi-check-lg ms-2"></i>
                             </button>
                             <a href="{{ route('login') }}" class="text-muted text-decoration-none small ls-1 hover-dark fw-bold">
-                                DÉJÀ MEMBRE ? SE CONNECTER
+                                ANNULER
                             </a>
                         </div>
                     </form>
@@ -114,9 +92,6 @@
             border: none !important;
             box-shadow: none !important;
             padding: 20px 10px !important;
-        }
-        .display-1 {
-            font-size: 3.5rem !important;
         }
     }
 
@@ -160,10 +135,6 @@
         align-items: center;
         justify-content: center;
         height: 100%;
-    }
-
-    .btn-toggle-password:hover {
-        color: #000;
     }
 
     .btn-premium-glass {

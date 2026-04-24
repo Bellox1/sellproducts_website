@@ -3,29 +3,41 @@
 @section('title', 'Statut en attente')
 
 @section('content')
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-6">
-            <div class="card border-0 shadow-lg">
-                <div class="card-body p-5 text-center">
-                    <div class="status-icon mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="#f39c12" viewBox="0 0 16 16">
-                            <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 13V2a6 6 0 1 1 0 12z"/>
-                            <path d="M8 4a.5.5 0 0 1 .5.5v3.5a.5.5 0 0 1-1 0V4.5A.5.5 0 0 1 8 4z"/>
-                        </svg>
+<div class="min-vh-100 d-flex align-items-start py-0">
+    <div class="vitrine-bg-blobs"></div>
+    <div class="container pt-0 mt-0">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="glass-registration-card p-4 p-md-5 text-center animate-in">
+                    <!-- Loading Status Icon -->
+                    <div class="mb-5 position-relative d-inline-block">
+                        <div class="status-pulse-ring"></div>
+                        <div class="status-icon-main">
+                            <i class="bi bi-hourglass-split text-dark display-1"></i>
+                        </div>
                     </div>
-                    <h2 class="fw-bold mb-3 text-warning">Demande en attente de validation</h2>
-                    <div class="status-message mb-4">
-                        <p class="lead mb-3">Votre demande a bien été prise en compte.</p>
-                        <p class="text-muted">Un administrateur va examiner votre demande sous peu. Vous recevrez une notification par email dès que votre compte sera validé.</p>
+                    
+                    <h1 class="display-4 fw-bold text-dark mb-2 ls-tight">Patience.</h1>
+                    <p class="text-muted fs-5 ls-wide text-uppercase mb-5">Votre accès est en cours de validation</p>
+                    
+                    <div class="glass-inner-card p-4 mb-5 mx-auto" style="max-width: 550px;">
+                        <p class="mb-0 text-dark opacity-75 fs-5">
+                            Votre demande a été transmise à notre équipe. 
+                            Nous vérifions vos informations pour garantir la <strong>meilleure expérience</strong> au sein de notre vitrine.
+                        </p>
                     </div>
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                        <a href="/" class="btn btn-danger px-4">
-                            <i class="bi bi-house-door me-2"></i> Retour à l'accueil
+
+                    <div class="d-flex align-items-center justify-content-center flex-wrap gap-4 mt-2">
+                        <a href="/" class="btn btn-premium-glass px-5">
+                            RETOUR À L'ACCUEIL <i class="bi bi-house-door ms-2"></i>
                         </a>
-                        <a href="mailto:{{ config('mail.contact_email') }}" class="btn btn-outline-secondary px-4">
-                            <i class="bi bi-envelope me-2"></i> Nous contacter
-                        </a>
+                        
+                        <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                            @csrf
+                            <button type="submit" class="btn btn-link text-muted text-decoration-none small ls-1 fw-bold hover-dark">
+                                SE DÉCONNECTER <i class="bi bi-box-arrow-right ms-2"></i>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -34,29 +46,87 @@
 </div>
 
 <style>
-    .card {
-        border-radius: 15px;
-        overflow: hidden;
+    .ls-tight { letter-spacing: -2px; }
+    .ls-wide { letter-spacing: 4px; }
+    .ls-1 { letter-spacing: 1px; }
+    
+    .glass-registration-card {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50px;
+        box-shadow: 0 40px 100px rgba(0, 0, 0, 0.05);
     }
 
-    .status-icon {
-        animation: pulse 2s infinite;
+    .glass-inner-card {
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 25px;
     }
 
-    @keyframes pulse {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.05); }
-        100% { transform: scale(1); }
+    .status-pulse-ring {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 120px;
+        height: 120px;
+        border: 2px solid rgba(0,0,0,0.05);
+        border-radius: 50%;
+        animation: pulseRing 3s ease-out infinite;
     }
 
-    .status-message {
-        max-width: 500px;
-        margin: 0 auto;
+    @keyframes pulseRing {
+        0% { width: 80px; height: 80px; opacity: 1; }
+        100% { width: 200px; height: 200px; opacity: 0; }
     }
 
-    .btn-danger {
-        background-color: #e74c3c;
-        border-color: #e74c3c;
+    .status-icon-main {
+        position: relative;
+        z-index: 2;
+        animation: rotateHourglass 4s infinite ease-in-out;
     }
+
+    @keyframes rotateHourglass {
+        0% { transform: rotate(0); }
+        45% { transform: rotate(0); }
+        55% { transform: rotate(180deg); }
+        100% { transform: rotate(180deg); }
+    }
+
+    .btn-premium-glass {
+        background: rgba(255, 255, 255, 0.5) !important;
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.6) !important;
+        border-radius: 50px !important;
+        padding: 15px 40px !important;
+        color: #000 !important;
+        font-weight: 800;
+        transition: all 0.4s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .btn-premium-glass:hover {
+        background: rgba(255, 255, 255, 0.8) !important;
+        transform: translateY(-3px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+
+    .hover-dark:hover {
+        color: #000 !important;
+    }
+
+    .animate-in {
+        animation: scaleUp 1.2s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+    }
+    @keyframes scaleUp {
+        from { opacity: 0; transform: scale(0.9) translateY(30px); }
+        to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    body { overflow-x: hidden; min-height: 100vh; }
 </style>
 @endsection

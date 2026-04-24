@@ -40,22 +40,24 @@ class VitrineController extends Controller
      */
     public function rechercher(Request $request)
     {
-        $query = $request->get('q');
+        $query = $request->get('q', '');
 
-        if (!$query) {
-            return redirect()->route('vitrine.index');
+        $standsQuery = Stand::whereHas('user', function($q) {
+            $q->where('role', 'entrepreneur_approuve');
+        });
+
+        if (!empty($query)) {
+            $standsQuery->where(function($q) use ($query) {
+                $q->where('nom_stand', 'like', "%{$query}%")
+                  ->orWhere('description', 'like', "%{$query}%")
+                  ->orWhereHas('produits', function($pq) use ($query) {
+                      $pq->where('nom', 'like', "%{$query}%")
+                         ->orWhere('description', 'like', "%{$query}%");
+                  });
+            });
         }
 
-        $stands = Stand::whereHas('user', function($q) {
-            $q->where('role', 'entrepreneur_approuve');
-        })->where(function($q) use ($query) {
-            $q->where('nom_stand', 'like', "%{$query}%")
-              ->orWhere('description', 'like', "%{$query}%")
-              ->orWhereHas('produits', function($pq) use ($query) {
-                  $pq->where('nom', 'like', "%{$query}%")
-                     ->orWhere('description', 'like', "%{$query}%");
-              });
-        })->with(['produits', 'user'])->get();
+        $stands = $standsQuery->with(['produits', 'user'])->get();
 
         return view('vitrine.recherche', compact('stands', 'query'));
     }

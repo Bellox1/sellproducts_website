@@ -24,13 +24,7 @@
             color: var(--dark-color);
         }
 
-        .navbar {
-            background-color: white !important;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 1.5rem 0;
-            position: relative;
-            z-index: 100;
-        }
+
 
         .hero-section {
             position: relative;
@@ -166,7 +160,7 @@
             background: rgba(255, 255, 255, 0.4) !important;
             backdrop-filter: blur(20px) !important;
             -webkit-backdrop-filter: blur(20px) !important;
-            padding: 10px 0;
+            padding: 5px 0;
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05) !important;
             border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
         }
@@ -328,6 +322,10 @@
             padding-top: 0;
             overflow-x: hidden;
             /* Fix horizontal scroll */
+        }
+
+        body:not(.intro-active) {
+            padding-top: 100px;
         }
 
         body.loaded {
@@ -630,9 +628,15 @@
             @endforeach
         </div>
     </div>
-    <nav class="navbar navbar-expand-lg navbar-light">
+    <nav class="navbar navbar-expand-lg navbar-light {{ !request()->routeIs('vitrine.index') ? 'scrolled' : '' }}">
         <div class="container">
-            <a class="navbar-brand" href="/">Eat&Drink</a>
+            <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" viewBox="0 0 24 24" class="d-inline-block">
+                    <path d="M12 2L1 8v8l11 6 11-6V8L12 2zm0 2.8L20 9v6l-8 4.4-8-4.4V9l8-4.2z"/>
+                    <path d="M12 12l-5-2.5V15l5 2.5 5-2.5V9.5L12 12z"/>
+                </svg>
+                <span>Eat&Drink</span>
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -690,7 +694,7 @@
         {{-- Hero section for Guests --}}
         @guest
             <section class="hero-section">
-                <video autoplay loop playsinline class="hero-video">
+                <video autoplay muted loop playsinline class="hero-video">
                     <source src="{{ asset('storage/video/banniere.mp4') }}" type="video/mp4">
                 </video>
                 <div class="hero-overlay"></div>
@@ -721,7 +725,7 @@
         @endauth
     @endif
 
-    <main class="container-fluid px-0 my-5" id="products">
+    <main class="container-fluid px-0 {{ in_array(Route::currentRouteName(), ['login', 'register', 'password.request', 'password.reset', 'attente']) ? 'mt-0 mb-5' : 'my-5' }}" id="products">
         @yield('content')
     </main>
 
@@ -729,7 +733,13 @@
         <div class="container">
             <div class="row section-padding">
                 <div class="col-lg-5 mb-5 mb-lg-0">
-                    <h2 class="footer-title">Eat&Drink</h2>
+                    <h2 class="footer-title d-flex align-items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" viewBox="0 0 24 24" class="d-inline-block">
+                            <path d="M12 2L1 8v8l11 6 11-6V8L12 2zm0 2.8L20 9v6l-8 4.4-8-4.4V9l8-4.2z"/>
+                            <path d="M12 12l-5-2.5V15l5 2.5 5-2.5V9.5L12 12z"/>
+                        </svg>
+                        <span>Eat&Drink</span>
+                    </h2>
                     <p class="lead opacity-75 mb-4" style="max-width: 400px;">Découvrez l'élite de l'artisanat
                         culinaire. Une vitrine immersive dédiée aux passionnés du goût et du savoir-faire authentique.
                     </p>
@@ -871,8 +881,9 @@
                     video.muted = false;
                     soundIcon.classList.replace('bi-volume-mute-fill', 'bi-volume-up-fill');
                 } else {
-                    // Default behavior (Sound ON)
-                    video.muted = false;
+                    // Default behavior (Muted for autoplay)
+                    video.muted = true;
+                    soundIcon.classList.replace('bi-volume-up-fill', 'bi-volume-mute-fill');
                 }
 
                 soundToggle.addEventListener('click', function() {

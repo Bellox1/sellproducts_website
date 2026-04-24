@@ -83,7 +83,7 @@
                                             <small class="text-muted">Aucun produit disponible pour le moment</small>
                                         </div>
                                     @endif
-                                    <a href="{{ route('vitrine.stand', $stand) }}" class="btn btn-glass-dark w-100">
+                                    <a href="{{ route('vitrine.stand', $stand) }}" class="btn btn-premium-glass w-100">
                                         <i class="bi bi-shop"></i> Visiter le stand
                                     </a>
                                 </div>
@@ -117,6 +117,26 @@
     </div>
 
     <style>
+        .btn-premium-glass {
+            background: rgba(255, 255, 255, 0.4) !important;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.5) !important;
+            border-radius: 50px !important;
+            padding: 12px 35px !important;
+            color: #000 !important;
+            font-weight: 700;
+            transition: all 0.4s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        .btn-premium-glass:hover {
+            background: rgba(255, 255, 255, 0.6) !important;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
         .search-sticky-container {
             transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
             z-index: 1000;

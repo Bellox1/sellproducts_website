@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Connexion')
+@section('title', 'Mot de passe oublié')
 
 @section('content')
 <div class="min-vh-100 d-flex align-items-start py-0 py-md-5">
@@ -9,12 +9,21 @@
         <div class="row justify-content-center">
             <div class="col-lg-6">
                 <div class="glass-registration-card p-5 animate-in">
+                    @if(session('status'))
+                        <div class="alert alert-success alert-dismissible fade show mb-4 border-0 shadow-sm" style="background: rgba(40,167,69,0.15); border-radius: 20px; backdrop-filter: blur(10px);">
+                            <div class="d-flex align-items-center text-success">
+                                <i class="bi bi-check-circle-fill me-3 fs-4"></i>
+                                <div>{{ session('status') }}</div>
+                            </div>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
                     @if($errors->any())
                         <div class="alert alert-danger alert-dismissible fade show mb-4 border-0 shadow-sm" style="background: rgba(220,53,69,0.15); border-radius: 20px; backdrop-filter: blur(10px);">
                             <div class="d-flex align-items-center">
                                 <i class="bi bi-exclamation-circle-fill me-3 fs-4"></i>
                                 <div>
-                                    <strong class="d-block mb-1">Erreur de connexion</strong>
+                                    <strong class="d-block mb-1">Attention !</strong>
                                     <ul class="mb-0 list-unstyled small">
                                         @foreach($errors->all() as $error)
                                             <li><i class="bi bi-dot"></i> {{ $error }}</li>
@@ -28,41 +37,27 @@
 
                     <!-- Branding/Icon -->
                     <div class="mb-4 text-center">
-                        <h1 class="display-3 fw-bold text-dark mb-0 ls-tight">Bienvenue.</h1>
-                        <p class="text-muted fs-5 ls-wide text-uppercase">L'expérience commence ici.</p>
+                        <h1 class="display-3 fw-bold text-dark mb-0 ls-tight">Récupération</h1>
+                        <p class="text-muted fs-5 ls-wide text-uppercase">Récupérez votre accès en un instant.</p>
                     </div>
 
-                    <form method="POST" action="{{ route('login') }}" class="mt-4">
+                    <form method="POST" action="{{ route('password.email') }}" class="mt-4">
                         @csrf
 
-                        <div class="mb-4">
-                            <label for="email" class="text-dark small ls-wide text-uppercase d-block mb-2 opacity-75">Adresse Email</label>
-                            <input type="email" class="form-control-premium" id="email" name="email" value="{{ old('email') }}" placeholder="votre@email.com" required autofocus>
-                        </div>
-
                         <div class="mb-5">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <label for="password" class="text-dark small ls-wide text-uppercase mb-0 opacity-75">Mot de Passe</label>
-                                <a href="{{ route('password.request') }}" class="text-dark fw-bold text-decoration-none opacity-50 hover-opacity-100" style="font-size: 0.7rem; letter-spacing: 1px;">
-                                    MOT DE PASSE OUBLIÉ ?
-                                </a>
-                            </div>
-                            <div class="position-relative mb-2">
-                                <input type="password" class="form-control-premium" id="password" name="password" placeholder="••••••••" required>
-                                <button type="button" class="btn-toggle-password" onclick="togglePassword('password')">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                            </div>
-                            <div class="text-end">
-                                <a href="{{ route('register') }}" class="text-muted text-decoration-none extra-small ls-1 hover-dark fw-bold">
-                                    NOUVEAU STAND ? S'INSCRIRE
+                            <label for="email" class="text-dark small ls-wide text-uppercase d-block mb-2 opacity-75">Votre Adresse Email</label>
+                            <input type="email" class="form-control-premium" id="email" name="email" value="{{ old('email') }}" placeholder="votre@email.com" required autofocus>
+                            <div class="d-flex justify-content-between align-items-start mt-2">
+                                <small class="text-muted" style="max-width: 70%;">Nous vous enverrons un code OTP à 6 chiffres.</small>
+                                <a href="{{ route('login') }}" class="text-muted text-decoration-none extra-small ls-1 hover-dark fw-bold text-end">
+                                    RETOUR À LA CONNEXION
                                 </a>
                             </div>
                         </div>
 
                         <div class="mt-5 text-center">
                             <button type="submit" class="btn btn-premium-glass px-5 w-100">
-                                SE CONNECTER <i class="bi bi-arrow-right ms-2"></i>
+                                ENVOYER LE CODE <i class="bi bi-send ms-2"></i>
                             </button>
                         </div>
                     </form>
@@ -120,28 +115,6 @@
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05) !important;
     }
 
-    .btn-toggle-password {
-        position: absolute;
-        right: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: none;
-        border: none;
-        color: rgba(0, 0, 0, 0.3);
-        font-size: 1.2rem;
-        cursor: pointer;
-        transition: color 0.3s ease;
-        z-index: 10;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-    }
-
-    .btn-toggle-password:hover {
-        color: #000;
-    }
-
     .btn-premium-glass {
         background: rgba(255, 255, 255, 0.5) !important;
         backdrop-filter: blur(15px);
@@ -166,8 +139,7 @@
         color: #000 !important;
     }
 
-    .opacity-50 { opacity: 0.5; }
-    .hover-opacity-100:hover { opacity: 1 !important; }
+    .extra-small { font-size: 0.65rem; }
 
     .animate-in {
         animation: scaleUp 1.2s cubic-bezier(0.19, 1, 0.22, 1) forwards;
@@ -179,19 +151,4 @@
 
     body { overflow-x: hidden; min-height: 100vh; }
 </style>
-
-<script>
-    function togglePassword(inputId) {
-        const input = document.getElementById(inputId);
-        const icon = input.nextElementSibling.querySelector('i');
-        
-        if (input.type === 'password') {
-            input.type = 'text';
-            icon.classList.replace('bi-eye', 'bi-eye-slash');
-        } else {
-            input.type = 'password';
-            icon.classList.replace('bi-eye-slash', 'bi-eye');
-        }
-    }
-</script>
 @endsection

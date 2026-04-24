@@ -42,6 +42,28 @@ class Commande extends Model
     }
 
     /**
+     * Obtenir le statut de la commande
+     */
+    public function getStatusAttribute()
+    {
+        return $this->details_commande['status'] ?? 'Pas encore géré';
+    }
+
+    /**
+     * Obtenir le label de statut pour l'affichage
+     */
+    public function getStatusLabelAttribute()
+    {
+        $status = $this->status;
+        return match($status) {
+            'Géré' => '<span class="badge bg-success rounded-pill px-3">GÉRÉ</span>',
+            'Plus dispo' => '<span class="badge bg-danger rounded-pill px-3">PLUS DISPO</span>',
+            'En cours' => '<span class="badge bg-warning text-dark rounded-pill px-3">EN COURS</span>',
+            default => '<span class="badge bg-secondary rounded-pill px-3">À GÉRER</span>',
+        };
+    }
+
+    /**
      * Obtenir l'email du client
      */
     public function getClientEmailAttribute()

@@ -29,7 +29,15 @@ class StandsController extends Controller
     public function show(Stand $stand)
     {
         $this->authorize('view', $stand);
-        return view('stands.show', compact('stand'));
+        $commandes = $stand->commandes()->latest()->take(10)->get();
+        return view('stands.show', compact('stand', 'commandes'));
+    }
+
+    public function commandes(Stand $stand)
+    {
+        $this->authorize('view', $stand);
+        $commandes = $stand->commandes()->latest()->paginate(15);
+        return view('stands.commandes', compact('stand', 'commandes'));
     }
 
     /**

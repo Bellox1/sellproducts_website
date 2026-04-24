@@ -181,4 +181,19 @@ class CommandesController extends Controller
         session()->forget('historique_achats');
         return redirect()->route('commandes.panier')->with('success', 'Historique vidé.');
     }
+    public function updateStatus(Request $request, Commande $commande)
+    {
+        $this->authorize('update', $commande);
+        
+        $request->validate([
+            'status' => 'required|string|in:Géré,Plus dispo,En cours,À gérer'
+        ]);
+
+        $details = $commande->details_commande;
+        $details['status'] = $request->status;
+        $commande->details_commande = $details;
+        $commande->save();
+
+        return back()->with('success', 'Statut de la commande mis à jour.');
+    }
 }

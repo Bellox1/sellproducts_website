@@ -26,13 +26,9 @@
                     <form method="POST" action="{{ route('password.update') }}" class="mt-4">
                         @csrf
                         
-                        <input type="hidden" name="email" value="{{ $email }}">
-
-                        <div class="mb-4">
-                            <label class="text-dark small ls-wide text-uppercase d-block mb-2 opacity-75">Code OTP reçu</label>
-                            <input type="text" name="otp" class="form-control-premium text-center fw-bold fs-3" 
-                                   placeholder="123456" maxlength="6" required autofocus>
-                            <small class="text-muted d-block mt-2 text-center">Entrez le code à 6 chiffres envoyé à votre email.</small>
+                        <div class="mb-5 text-center">
+                            <i class="bi bi-shield-lock text-dark display-3 mb-3 d-block"></i>
+                            <p class="text-muted">Votre identité a été vérifiée. <br>Choisissez votre nouveau mot de passe ci-dessous.</p>
                         </div>
 
                         <div class="row mb-4">

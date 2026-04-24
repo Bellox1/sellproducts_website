@@ -6,88 +6,130 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User;
-use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class ForgotPasswordController extends Controller
 {
     /**
-     * Afficher le formulaire de demande d'OTP (Email)
+     * ÉTAPE 1: Demande d'email
      */
     public function showLinkRequestForm()
     {
         return view('auth.forgot-password');
     }
 
-    /**
-     * Générer et envoyer l'OTP par email
-     */
     public function sendOtp(Request $request)
     {
         $request->validate(['email' => 'required|email|exists:users,email']);
-
         $email = $request->email;
         $otp = rand(100000, 999999);
 
-        // Stocker l'OTP (on remplace l'existant s'il y en a un)
         DB::table('password_reset_tokens')->updateOrInsert(
             ['email' => $email],
-            [
-                'token' => $otp, // On utilise la colonne 'token' pour stocker l'OTP
-                'created_at' => now(),
-            ]
+            ['token' => $otp, 'created_at' => now()]
         );
 
-        // Envoyer l'email
         try {
-            Mail::raw("Votre code de réinitialisation de mot de passe est : $otp. Ce code expirera bientôt.", function ($message) use ($email) {
-                $message->to($email)
-                        ->subject("Réinitialisation de votre mot de passe - Eat&Drink");
+            Mail::raw("Votre code Eat&Drink : $otp", function ($message) use ($email) {
+                $message->to($email)->subject("Code de vérification");
             });
 
-            return redirect()->route('password.reset', ['email' => $email])
-                             ->with('status', 'Un code de réinitialisation a été envoyé à votre adresse email.');
+            // On stocke l'email en session pour l'étape suivante
+            session(['reset_email' => $email]);
+
+            return redirect()->route('password.verify')->with('status', 'Code envoyé !');
         } catch (\Exception $e) {
-            return back()->withErrors(['email' => "Impossible d'envoyer l'email. Veuillez réessayer plus tard."]);
+            return back()->withErrors(['email' => "Erreur d'envoi."]);
         }
     }
 
     /**
-     * Afficher le formulaire de réinitialisation (OTP + Nouveau mot de passe)
+     * ÉTAPE 2: Vérification de l'OTP
      */
-    public function showResetForm(Request $request)
+    public function showVerifyForm()
     {
-        $email = $request->get('email');
-        return view('auth.reset-password', compact('email'));
+        if (!session('reset_email')) return redirect()->route('password.request');
+        return view('auth.verify-otp', ['email' => session('reset_email')]);
+    }
+
+    public function verifyOtp(Request $request)
+    {
+        $request->validate([
+            'otp' => 'required|array|size:6',
+            'otp.*' => 'required|numeric'
+        ]);
+
+        $fullOtp = implode('', $request->otp);
+        $email = session('reset_email');
+
+        $reset = DB::table('password_reset_tokens')
+            ->where('email', $email)
+            ->where('token', $fullOtp)
+            ->first();
+
+        if (!$reset || Carbon::parse($reset->created_at)->addMinutes(15)->isPast()) {
+            return back()->withErrors(['otp' => 'Code invalide ou expiré.']);
+        }
+
+        // Marquer comme vérifié en session
+        session(['otp_verified' => true]);
+
+        return redirect()->route('password.reset');
+    }
+
+    public function resendOtp()
+    {
+        $email = session('reset_email');
+        if (!$email) return redirect()->route('password.request');
+
+        $otp = rand(100000, 999999);
+
+        DB::table('password_reset_tokens')->updateOrInsert(
+            ['email' => $email],
+            ['token' => $otp, 'created_at' => now()]
+        );
+
+        try {
+            Mail::raw("Votre nouveau code Eat&Drink : $otp", function ($message) use ($email) {
+                $message->to($email)->subject("Nouveau code de vérification");
+            });
+
+            return back()->with('status', 'Un nouveau code a été envoyé !');
+        } catch (\Exception $e) {
+            return back()->withErrors(['otp' => "Erreur d'envoi."]);
+        }
     }
 
     /**
-     * Traiter la réinitialisation
+     * ÉTAPE 3: Nouveau mot de passe
      */
+    public function showResetForm()
+    {
+        if (!session('otp_verified') || !session('reset_email')) {
+            return redirect()->route('password.request');
+        }
+        return view('auth.reset-password', ['email' => session('reset_email')]);
+    }
+
     public function reset(Request $request)
     {
         $request->validate([
-            'email' => 'required|email|exists:users,email',
-            'otp' => 'required|numeric',
             'password' => 'required|min:8|confirmed',
         ]);
 
-        $reset = DB::table('password_reset_tokens')
-            ->where('email', $request->email)
-            ->where('token', $request->otp)
-            ->first();
-
-        if (!$reset || \Carbon\Carbon::parse($reset->created_at)->addMinutes(15)->isPast()) {
-            return back()->withErrors(['otp' => 'Le code OTP est invalide ou a expiré.']);
+        $email = session('reset_email');
+        if (!$email || !session('otp_verified')) {
+            return redirect()->route('password.request');
         }
 
-        // Mettre à jour le mot de passe
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $email)->first();
         $user->password = Hash::make($request->password);
         $user->save();
 
-        // Supprimer l'OTP utilisé
-        DB::table('password_reset_tokens')->where('email', $request->email)->delete();
+        // Nettoyage
+        DB::table('password_reset_tokens')->where('email', $email)->delete();
+        session()->forget(['reset_email', 'otp_verified']);
 
-        return redirect()->route('login')->with('status', 'Votre mot de passe a été réinitialisé avec succès. Vous pouvez maintenant vous connecter.');
+        return redirect()->route('login')->with('status', 'Mot de passe mis à jour !');
     }
 }

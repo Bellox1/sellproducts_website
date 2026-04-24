@@ -18,10 +18,27 @@
             --light-color: #ecf0f1;
         }
 
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
         body {
             font-family: 'Syne', sans-serif;
             background-color: #f8f9fa;
             color: var(--dark-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        main#products {
+            flex: 1 0 auto;
+        }
+
+        footer {
+            flex-shrink: 0;
         }
 
 
@@ -64,6 +81,10 @@
             color: #1e293b !important;
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .hover-white:hover {
+            color: white !important;
         }
 
         .hero-video {
@@ -690,7 +711,7 @@
             </div>
         </div>
     </nav>
-    @if (in_array(Route::currentRouteName(), ['vitrine.index', 'stands.index']))
+    @if (in_array(Route::currentRouteName(), ['vitrine.index']))
         {{-- Hero section for Guests --}}
         @guest
             <section class="hero-section">
@@ -725,7 +746,7 @@
         @endauth
     @endif
 
-    <main class="container-fluid px-0 {{ in_array(Route::currentRouteName(), ['login', 'register', 'password.request', 'password.reset', 'attente']) ? 'mt-0 mb-5' : 'my-5' }}" id="products">
+    <main class="container-fluid px-0 {{ in_array(Route::currentRouteName(), ['login', 'register', 'password.request', 'password.verify', 'password.reset', 'attente', 'admin.index', 'dashboard', 'stands.index', 'stands.show', 'stands.create', 'stands.edit', 'produits.index', 'produits.create', 'produits.edit']) ? 'mt-0 mb-5' : 'my-5' }}" id="products">
         @yield('content')
     </main>
 
@@ -771,7 +792,11 @@
                     <p class="mb-1">Des questions ?</p>
                     <a href="mailto:contact@eatdrink.com"
                         class="footer-link fs-5 fw-bold text-white">contact@eatdrink.com</a>
-                    <p class="mt-3 opacity-50">+229 01 46 86 25 36</p>
+                    <p class="mt-3">
+                        <a href="tel:+2290146862536" class="text-white-50 text-decoration-none hover-white">
+                            +229 01 46 86 25 36
+                        </a>
+                    </p>
                 </div>
             </div>
 

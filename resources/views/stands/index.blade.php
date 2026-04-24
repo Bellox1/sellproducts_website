@@ -3,11 +3,11 @@
 @section('title', 'Mes Stands')
 
 @section('content')
-<div class="admin-dashboard-wrapper min-vh-100 py-5" style="background: transparent; color: #1e293b; padding-top: 15rem;">
-    <div class="container-fluid px-3 px-md-5 py-4">
+<div class="admin-dashboard-wrapper min-vh-100 py-3 py-md-5" style="background: transparent; color: #1e293b;">
+    <div class="container-fluid px-3 px-md-5 pt-0 pb-4">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4 mb-md-5 gap-4 animate-in">
             <div class="glass-container p-4 rounded-5 border border-white border-opacity-50 w-100">
-                <p class="text-secondary small ls-2 text-uppercase mb-2 fw-bold" style="letter-spacing: 4px;">Mon Commerce</p>
+                <p class="text-secondary small ls-2 text-uppercase mb-0 fw-bold" style="letter-spacing: 4px;">Mon Commerce</p>
                 <h1 class="display-5 display-md-3 fw-bold mb-0 text-dark">Mes Stands.</h1>
                 <p class="fs-5 text-muted mt-3 fw-medium">Gérez vos points de vente et votre présence sur <span class="text-primary">Eat&Drink</span>.</p>
             </div>
@@ -129,9 +129,6 @@
     }
 
     @media (max-width: 767px) {
-        .admin-dashboard-wrapper {
-            padding-top: 8rem !important;
-        }
         h1.display-4 {
             font-size: 2rem !important;
         }

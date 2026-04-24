@@ -24,6 +24,9 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 // Routes Mot de passe oublié (OTP)
 Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
 Route::post('/forgot-password', [ForgotPasswordController::class, 'sendOtp'])->name('password.email');
+Route::get('/verify-otp', [ForgotPasswordController::class, 'showVerifyForm'])->name('password.verify');
+Route::post('/verify-otp', [ForgotPasswordController::class, 'verifyOtp'])->name('password.verify.otp');
+Route::post('/resend-otp', [ForgotPasswordController::class, 'resendOtp'])->name('password.resend');
 Route::get('/reset-password', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('/reset-password', [ForgotPasswordController::class, 'reset'])->name('password.update');
 
@@ -65,9 +68,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('stands/{stand}/edit', [StandsController::class, 'edit'])->name('stands.edit');
     Route::put('stands/{stand}', [StandsController::class, 'update'])->name('stands.update');
     Route::patch('stands/{stand}', [StandsController::class, 'update']);
+    Route::get('stands/{stand}/commandes', [StandsController::class, 'commandes'])->name('stands.commandes');
     Route::get('stands/{stand}', [StandsController::class, 'show'])->name('stands.show');
 
     // --- Routes Commandes ---
+    Route::post('/commandes/{commande}/update-status', [CommandesController::class, 'updateStatus'])->name('commandes.update-status');
     Route::get('/commandes/historique', [CommandesController::class, 'historique'])->name('commandes.historique');
     Route::get('/commandes/{commande}', [CommandesController::class, 'show'])->name('commandes.show');
 

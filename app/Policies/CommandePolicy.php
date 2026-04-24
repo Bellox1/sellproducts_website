@@ -37,7 +37,7 @@ class CommandePolicy
      */
     public function update(User $user, Commande $commande): bool
     {
-        return false; // Les commandes ne peuvent pas être modifiées
+        return $user->role === 'entrepreneur_approuve' && $user->id === $commande->stand->user_id;
     }
 
     /**

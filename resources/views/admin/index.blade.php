@@ -3,9 +3,8 @@
 @section('title', 'Centre de Contrôle - Admin')
 
 @section('content')
-    <div class="admin-dashboard-wrapper min-vh-100 py-5" style="background: transparent; color: #1e293b;">
-        <div class="d-block d-md-none" style="height: 80px; width: 100%;"></div>
-        <div class="d-none d-md-block" style="height: 200px; width: 100%;"></div>
+    <div class="admin-dashboard-wrapper min-vh-100 py-3 py-md-5" style="background: transparent; color: #1e293b;">
+        
         
         <div class="container-fluid px-3 px-md-5 py-4">
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4 mb-md-5 gap-4 animate-in">

@@ -7,6 +7,7 @@
     <div class="vitrine-wrapper py-2">
         <div class="d-block d-md-none" style="height: 80px; width: 100%;"></div>
         <div class="d-none d-md-block" style="height: 30px; width: 100%;"></div>
+        
         <div class="px-3 px-md-5">
             <!-- Return & Stand Header Row -->
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 mb-md-5 gap-3 animate-in">
@@ -96,35 +97,44 @@
                         <p class="text-muted">L'artisan prépare ses nouvelles créations.</p>
                     </div>
                 @endif
-            </div> <!-- End px-5 -->
+            </div>
+        </div> <!-- End px-3 px-md-5 -->
 
-            <!-- Immersive Side-Scroll Video Section (Edge-to-Edge) -->
-            <div class="video-scroll-container mt-5" style="height: 300vh;">
-                <div class="sticky-video-wrapper">
-                    <div class="video-horizontal-track d-flex" id="videoTrack" style="transform: translateX(0);">
-                        @php
-                            $videos = ['foule.mp4', 'bugger-boisson.mp4', 'pizza.mp4', 'chef-food.mp4'];
-                        @endphp
-                        @foreach($videos as $video)
-                            <div class="video-full-slide">
-                                <div class="video-container-premium">
-                                    <video autoplay muted loop playsinline class="cinematic-video">
-                                        <source src="{{ asset('storage/video/' . $video) }}" type="video/mp4">
-                                    </video>
-                                    <div class="video-caption-overlay p-5 d-flex align-items-end">
-                                        <div class="animate-on-scroll p-4">
-                                            <h3 class="display-3 fw-bold text-white mb-0">L'Art Culinaire</h3>
-                                            <p class="text-white-50 fs-4 ls-2 text-uppercase">Une immersion totale</p>
-                                        </div>
+        <div class="py-5 my-md-5"></div> <!-- Section Spacer -->
+
+        <!-- Immersive Side-Scroll Video Section (Edge-to-Edge) -->
+        <div class="video-scroll-container mb-0" style="height: 400vh; scroll-snap-type: y mandatory;">
+            <!-- Snap Points for determined positions -->
+            <div style="position: absolute; top:0; height: 100vh; width: 1px; scroll-snap-align: start;"></div>
+            <div style="position: absolute; top:100vh; height: 100vh; width: 1px; scroll-snap-align: start;"></div>
+            <div style="position: absolute; top:200vh; height: 100vh; width: 1px; scroll-snap-align: start;"></div>
+            <div style="position: absolute; top:300vh; height: 100vh; width: 1px; scroll-snap-align: start;"></div>
+
+            <div class="sticky-video-wrapper">
+                <div class="video-horizontal-track d-flex" id="videoTrack" style="transform: translateX(0);">
+                    @php
+                        $videos = ['foule.mp4', 'bugger-boisson.mp4', 'pizza.mp4', 'chef-food.mp4'];
+                    @endphp
+                    @foreach($videos as $index => $video)
+                        <div class="video-full-slide {{ $index === 0 ? 'active' : '' }}">
+                            <div class="video-container-premium">
+                                <video autoplay muted loop playsinline class="cinematic-video">
+                                    <source src="{{ asset('storage/video/' . $video) }}" type="video/mp4">
+                                </video>
+                                <div class="video-caption-overlay p-5 d-flex align-items-end">
+                                    <div class="animate-on-scroll p-4">
+                                        <h3 class="display-3 fw-bold text-white mb-0">L'Art Culinaire</h3>
+                                        <p class="text-white-50 fs-4 ls-2 text-uppercase">Une immersion totale</p>
                                     </div>
                                 </div>
                             </div>
-                        @endforeach
-                    </div>
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>
-    </div>
+    </div> <!-- End vitrine-wrapper -->
+    <div class="mb-5 pb-5"></div> <!-- Footer spacer -->
 
 <style>
     .video-scroll-container {
@@ -143,24 +153,33 @@
     
     .video-horizontal-track {
         height: 100%;
-        width: 400%; /* 4 videos */
-        will-change: transform;
+        width: 100%; /* No longer 400% */
+        position: relative;
     }
     
     .video-full-slide {
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100vw;
         height: 100vh;
-        flex: 0 0 100vw;
-        padding: 5vh 5vw;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+        pointer-events: none;
+    }
+    
+    .video-full-slide.active {
+        opacity: 1;
+        pointer-events: auto;
     }
     
     .video-container-premium {
         width: 100%;
         height: 100%;
-        border-radius: 40px;
+        border-radius: 0 !important;
         overflow: hidden;
         position: relative;
-        box-shadow: 0 50px 100px rgba(0,0,0,0.5);
+        background: #000;
     }
     
     .cinematic-video {
@@ -193,10 +212,22 @@
             if (scrollY >= containerTop && scrollY <= containerTop + containerHeight - window.innerHeight) {
                 const scrolled = scrollY - containerTop;
                 const percentage = (scrolled / (containerHeight - window.innerHeight)) * 100;
-                // Move track: 4 videos means we move -75% of the 400% width
-                track.style.transform = `translateX(-${(percentage / 100) * 75}%)`;
+                const videoIndex = Math.round(percentage / 33.33);
+                
+                const slides = document.querySelectorAll('.video-full-slide');
+                slides.forEach((slide, index) => {
+                    if (index === videoIndex) {
+                        slide.classList.add('active');
+                    } else {
+                        slide.classList.remove('active');
+                    }
+                });
             } else if (scrollY < containerTop) {
-                track.style.transform = `translateX(0)`;
+                const slides = document.querySelectorAll('.video-full-slide');
+                slides.forEach((slide, index) => {
+                    if (index === 0) slide.classList.add('active');
+                    else slide.classList.remove('active');
+                });
             }
         }
     });
@@ -204,23 +235,6 @@
 
     <style>
         /* Premium Stand View Styles */
-        .stand-header-premium {
-            padding: 40px 0;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-        }
-
-        .stand-icon-wrapper {
-            width: 100px;
-            height: 100px;
-            background: white;
-            border-radius: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
-        }
-
-        /* Staggered Grid (Pinterest style for products) */
         .stands-masonry-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -249,23 +263,8 @@
             .vitrine-wrapper {
                 padding: 0 !important;
             }
-            h1.h4 {
-                font-size: 1.5rem !important;
-            }
-            .display-5 {
-                font-size: 2rem !important;
-            }
-            .glass-desc-box {
-                padding: 1rem !important;
-            }
             .video-scroll-container {
-                display: none; /* Often too complex for small mobile screens, or needs specific mobile adjustment */
-            }
-            .card-body.p-4 {
-                padding: 1.25rem !important;
-            }
-            .premium-product-card {
-                border-radius: 20px !important;
+                display: none;
             }
         }
 
@@ -294,32 +293,12 @@
             font-size: 1.2rem;
         }
 
-        /* Quantity Control */
-        .quantity-control-wrapper {
-            border: 1px solid rgba(0, 0, 0, 0.05);
-        }
-
-        .btn-qty {
-            width: 40px;
-            height: 40px;
-            background: white;
-            color: black;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-
-        .btn-qty:hover {
-            background: #000;
-            color: #fff;
-        }
-
         .add-btn-premium:hover {
             background: #333;
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
 
-        /* Animations: Slide in from right staggered */
         .animate-in {
             animation: fadeInRight 0.8s cubic-bezier(0.19, 1, 0.22, 1) forwards;
         }
@@ -329,51 +308,19 @@
             opacity: 0;
         }
 
-        .video-card {
-            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-            background: #000;
-        }
-
-        .video-card:hover {
-            transform: scale(1.02) translateY(-5px);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.2) !important;
-        }
-
-        .video-card:hover .video-overlay {
-            opacity: 1;
-            background: rgba(0,0,0,0.1);
-        }
-
-        .video-card video {
-            filter: brightness(0.9);
-            transition: all 0.8s ease;
-        }
-
-        .video-card:hover video {
-            filter: brightness(1.1);
-        }
-
         @keyframes fadeInRight {
             from {
                 opacity: 0;
                 transform: translateX(80px) translateY(10px) rotate(2deg);
             }
-
             to {
                 opacity: 1;
                 transform: translateX(0) translateY(0) rotate(0deg);
             }
         }
-
-        @for ($i = 1; $i <= 12; $i++)
-            .masonry-item:nth-child({{ $i }}) {
-                animation-delay: {{ $i * 0.2 }}s;
-            }
-        @endfor
     </style>
 
 <script>
-    // Reveal cards one by one
     document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.animate-card').forEach((card, index) => {
             card.style.animationDelay = `${index * 0.2}s`;
@@ -384,9 +331,7 @@
         
         window.addEventListener('scroll', () => {
             if (navbar && videoSection) {
-                // If it's hidden via display: none (like on mobile), do nothing
                 if (window.getComputedStyle(videoSection).display === 'none') {
-                    // Make sure navbar is visible on mobile despite scrolling
                     navbar.style.transform = 'translateY(0)';
                     return;
                 }

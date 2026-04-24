@@ -7,10 +7,10 @@
     <div class="container-fluid px-3 px-md-5 pt-0 pb-4">
         <!-- Header -->
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4 mb-md-5 gap-4 animate-in">
-            <div class="glass-container p-4 rounded-5 border border-white border-opacity-50 w-100">
+            <div class="glass-container p-3 p-md-4 rounded-5 border border-white border-opacity-50 w-100">
                 <p class="text-secondary small ls-2 text-uppercase mb-0 fw-bold" style="letter-spacing: 4px;">Gestion Stand</p>
-                <h1 class="display-5 display-md-3 fw-bold mb-0 text-dark">{{ $stand->nom_stand }}.</h1>
-                <p class="fs-5 text-muted mt-3 fw-medium">Activité en direct et inventaire.</p>
+                <h1 class="h3 h1-md fw-bold mb-0 text-dark">{{ $stand->nom_stand }}.</h1>
+                <p class="small text-muted mt-2 fw-medium mb-0">Activité en direct et inventaire.</p>
             </div>
             <div class="pb-3 w-100 d-md-flex justify-content-end">
                 <div class="d-flex flex-wrap gap-2">
@@ -42,29 +42,30 @@
                 </a>
             </div>
 
-            <div class="px-2">
+            <div class="px-0 px-md-2">
                 @if($commandes->count() > 0)
-                    <div class="overflow-visible">
+                    <!-- Desktop Table View -->
+                    <div class="d-none d-md-block table-responsive overflow-visible">
                         <table class="table align-middle m-0 text-dark">
                             <thead>
                                 <tr class="text-secondary text-uppercase small ls-1">
-                                    <th class="border-0 pb-4">ID</th>
-                                    <th class="border-0 pb-4">Client</th>
-                                    <th class="border-0 pb-4">Total</th>
-                                    <th class="border-0 pb-4">Statut</th>
-                                    <th class="border-0 pb-4 text-end">Action</th>
+                                    <th class="border-0 pb-4 text-nowrap">ID</th>
+                                    <th class="border-0 pb-4 text-nowrap">Client</th>
+                                    <th class="border-0 pb-4 text-nowrap">Total</th>
+                                    <th class="border-0 pb-4 text-nowrap">Statut</th>
+                                    <th class="border-0 pb-4 text-end text-nowrap">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($commandes as $commande)
                                     <tr class="border-top">
                                         <td class="py-4 fw-bold">#{{ $commande->id }}</td>
-                                        <td>
-                                            <div class="fw-bold">{{ $commande->client_email ?? 'Client Anonyme' }}</div>
-                                            <div class="small text-muted">{{ $commande->created_at->format('d/m/Y H:i') }}</div>
+                                        <td class="text-nowrap">
+                                            <div class="fw-bold">{{ $commande->client_email ?? 'Anonyme' }}</div>
+                                            <div class="small text-muted">{{ $commande->created_at->format('d/m/y H:i') }}</div>
                                         </td>
-                                        <td class="fw-bold text-dark">{{ number_format($commande->total, 2) }} €</td>
-                                        <td>
+                                        <td class="fw-bold text-dark text-nowrap">{{ number_format($commande->total, 2) }} €</td>
+                                        <td class="text-nowrap">
                                             {!! $commande->status_label !!}
                                         </td>
                                         <td class="text-end text-nowrap">
@@ -112,6 +113,69 @@
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
+
+                    <!-- Mobile Card View -->
+                    <div class="d-block d-md-none">
+                        <div class="row g-3">
+                            @foreach($commandes as $commande)
+                                <div class="col-12">
+                                    <div class="glass-container p-4 rounded-5 border border-white position-relative">
+                                        <div class="d-flex justify-content-between align-items-start mb-3">
+                                            <div>
+                                                <span class="text-secondary small fw-bold">#{{ $commande->id }}</span>
+                                                <div class="fw-bold text-dark mt-1">{{ $commande->client_email ?? 'Anonyme' }}</div>
+                                                <div class="small text-muted">{{ $commande->created_at->format('d/m/y H:i') }}</div>
+                                            </div>
+                                            <div class="text-end">
+                                                <div class="fw-bold text-primary mb-2">{{ number_format($commande->total, 2) }} €</div>
+                                                {!! $commande->status_label !!}
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="dropdown mt-3">
+                                            <button class="btn btn-sm btn-glass-auth rounded-pill w-100 py-2 dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                                ACTIONS DE GESTION
+                                            </button>
+                                            <ul class="dropdown-menu border-0 shadow-lg rounded-4 p-2 w-100">
+                                                <li>
+                                                    <form action="{{ route('commandes.update-status', $commande) }}" method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="status" value="Géré">
+                                                        <button type="submit" class="dropdown-item rounded-3 fw-bold text-success py-2">
+                                                            <i class="bi bi-check-circle me-2"></i> Marquer GÉRÉ
+                                                        </button>
+                                                    </form>
+                                                </li>
+                                                <li>
+                                                    <form action="{{ route('commandes.update-status', $commande) }}" method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="status" value="En cours">
+                                                        <button type="submit" class="dropdown-item rounded-3 fw-bold text-warning py-2">
+                                                            <i class="bi bi-clock-history me-2"></i> Marquer EN COURS
+                                                        </button>
+                                                    </form>
+                                                </li>
+                                                <li>
+                                                    <form action="{{ route('commandes.update-status', $commande) }}" method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="status" value="Plus dispo">
+                                                        <button type="submit" class="dropdown-item rounded-3 fw-bold text-danger py-2">
+                                                            <i class="bi bi-x-circle me-2"></i> PLUS DISPO
+                                                        </button>
+                                                    </form>
+                                                </li>
+                                                <li class="border-top mt-2 pt-2">
+                                                    <a href="{{ route('commandes.show', $commande) }}" class="dropdown-item rounded-3 py-2 text-center small text-muted">
+                                                        <i class="bi bi-eye me-1"></i> VOIR DÉTAILS
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 @else
                     <div class="text-center py-5">
@@ -240,13 +304,7 @@
         to { opacity: 1; transform: translateY(0); }
     }
 
-    .overflow-visible {
-        overflow: visible !important;
-    }
-    
-    .table td {
-        overflow: visible !important;
-    }
+
 
     .dropdown-menu {
         z-index: 1050 !important;

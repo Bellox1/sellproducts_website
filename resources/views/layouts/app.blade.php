@@ -45,12 +45,13 @@
 
         .hero-section {
             position: relative;
+            width: 100%;
             height: 100vh;
-            min-height: 600px;
+            min-height: 100vh; /* Force full screen height */
             overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: block; /* Removed flex to avoid squishing content */
+            margin: 0;
+            padding: 0;
         }
 
         .auth-hero-section {
@@ -93,11 +94,11 @@
             left: 50%;
             width: 100%;
             height: 100%;
-            transform: translate3d(-50%, -50%, 0);
+            min-width: 100%;
+            min-height: 100%;
+            transform: translate(-50%, -50%);
             object-fit: cover;
             z-index: 1;
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
         }
 
         .hero-overlay {
@@ -346,7 +347,7 @@
         }
 
         body:not(.intro-active) {
-            padding-top: 100px;
+            padding-top: 0; /* Reverted to avoid shifting the hero */
         }
 
         body.loaded {

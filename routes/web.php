@@ -83,7 +83,7 @@ Route::middleware(['auth'])->group(function () {
     // Test email
     Route::get('/test-gmail', function() {
         Mail::raw('Test SMTP Gmail', function($m) {
-            $m->to('destinataire@example.com')->subject('Test');
+            $m->to('mantinoubello123@gmail.com')->subject('Test');
         });
         return "Email envoyé !";
     });

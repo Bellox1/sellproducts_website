@@ -67,7 +67,7 @@
                                                     class="d-flex justify-content-between align-items-center py-2 border-bottom">
                                                     <span>{{ $produit->nom }}</span>
                                                     <span class="fw-bold">{{ number_format($produit->prix, 2) }}
-                                                        €</span>
+                                                        FCFA</span>
                                                 </div>
                                             @endforeach
                                             @if ($stand->produits->count() > 3)
@@ -137,6 +137,7 @@
             transform: translateY(-3px);
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
         }
+
         .search-sticky-container {
             transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
             z-index: 1000;
@@ -234,18 +235,22 @@
             .vitrine-wrapper {
                 padding: 0 16px !important;
             }
+
             .vitrine-wrapper.side-active .vitrine-intro-container {
                 position: static !important;
                 width: 100% !important;
                 transform: none !important;
             }
+
             .vitrine-wrapper.side-active .intro-content {
                 transform: none !important;
             }
+
             .vitrine-wrapper.side-active .search-sticky-container {
                 position: static !important;
                 width: 100% !important;
             }
+
             .side-active .search-input-group {
                 position: static !important;
                 max-width: 100% !important;
@@ -404,12 +409,15 @@
                 font-size: 2.8rem !important;
                 letter-spacing: -1px;
             }
+
             .search-input {
                 font-size: 1rem !important;
             }
+
             .cinematic-video {
                 height: 300px !important;
             }
+
             .video-wrapper-inner {
                 border-radius: 24px !important;
             }
@@ -441,7 +449,8 @@
             transition: all 0.5s ease !important;
         }
 
-        .vitrine-intro-container, .search-sticky-container {
+        .vitrine-intro-container,
+        .search-sticky-container {
             transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.5s ease;
         }
 

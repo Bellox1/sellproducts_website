@@ -10,6 +10,7 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
+        $now = now();
         DB::table('users')->insert([
             [
                 'name' => 'Admin Principal',
@@ -17,6 +18,8 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'tel' => '0101010101',
                 'role' => 'admin',
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
             [
                 'name' => 'Jean Dupont',
@@ -24,6 +27,8 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'tel' => '0601020304',
                 'role' => 'entrepreneur_approuve',
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
             [
                 'name' => 'Maria Rossi',
@@ -31,6 +36,8 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'tel' => '0602030405',
                 'role' => 'entrepreneur_approuve',
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
             [
                 'name' => 'Karim Ben',
@@ -38,6 +45,8 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'tel' => '0603040506',
                 'role' => 'entrepreneur_approuve',
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
             [
                 'name' => 'Sophie Martin',
@@ -45,6 +54,8 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'tel' => '0604050607',
                 'role' => 'entrepreneur_approuve',
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
             [
                 'name' => 'Li Wang',
@@ -52,6 +63,8 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'tel' => '0605060708',
                 'role' => 'entrepreneur_en_attente',
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
             [
                 'name' => 'Emma Green',
@@ -59,6 +72,8 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'tel' => '0606070809',
                 'role' => 'entrepreneur_en_attente',
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
             [
                 'name' => 'Paul Fromage',
@@ -66,6 +81,8 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'tel' => '0607080910',
                 'role' => 'entrepreneur_en_attente',
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
             [
                 'name' => 'Luc Boucher',
@@ -73,6 +90,8 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'tel' => '0608091011',
                 'role' => 'entrepreneur_approuve',
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
             [
                 'name' => 'Julie Sucre',
@@ -80,6 +99,8 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'tel' => '0609101112',
                 'role' => 'entrepreneur_approuve',
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
         ]);
     }

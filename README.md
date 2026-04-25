@@ -1,40 +1,71 @@
-# initialisation du projet 
-- creation des différentes migrations pour la creation automatique des différentes tables
-- creation des modèle stand, produit, user, et commande
-# 🎯 Gestion des Produits avec Authentification, Policy et Gate dans Laravel
+# 🛍️ Eat&Drink - Gestion de Ventes Multi-Produits Événementielles
 
-Ce projet Laravel implémente un **CRUD complet pour les produits**, sécurisé de façon à ce que **seuls les utilisateurs avec le rôle `entrepreneur_approuve`** puissent ajouter, modifier ou supprimer des produits. Les administrateurs (`admin`) ont un accès complet via une **règle globale (Gate)**.
+**Eat&Drink** est une plateforme e-commerce polyvalente conçue avec Laravel pour la gestion complète de stands et de produits lors d'événements. Elle offre une autonomie totale aux entrepreneurs pour vendre tout type de marchandises tout en garantissant une expérience d'achat fluide.
 
 ---
 
-## ⚙️ Fonctionnalités principales
+## 📸 Aperçus de la Plateforme
 
-- 🔐 Authentification via le modèle `User`
-- ✅ Gestion des rôles (`admin`, `entrepreneur_en_attente`, `entrepreneur_approuve`)
-- 📦 CRUD complet pour le modèle `Produit`
-- 🎯 Accès restreint par **Policy** (`ProduitPolicy`)
-- 🔐 Autorisation globale via **Gate::before** pour les admins
-- 🔄 Relations entre `User`, `Stand`, et `Produit`
+<p align="center">
+  <img src="Demo/1.png" width="30%" />
+  <img src="Demo/2.png" width="30%" />
+  <img src="Demo/3.png" width="30%" />
+  <br />
+  <img src="Demo/4.png" width="30%" />
+  <img src="Demo/5.png" width="30%" />
+  <img src="Demo/6.png" width="30%" />
+  <br />
+  <img src="Demo/7.png" width="30%" />
+  <img src="Demo/8.png" width="30%" />
+  <img src="Demo/9.png" width="30%" />
+  <br />
+  <img src="Demo/10.png" width="30%" />
+  <img src="Demo/11.png" width="30%" />
+  <img src="Demo/12.png" width="30%" />
+</p>
 
 ---
 
-## 🗃️ Base de données
+## 🌟 Fonctionnalités Maîtresses
 
-### Tables utilisées :
-- `users` : contient les rôles et les identifiants
-- `stands` : chaque utilisateur a un ou plusieurs stands
-- `produits` : liés à un stand (donc indirectement à un utilisateur)
-- `commandes` : (à venir ou optionnelle)
+### 👤 Gestion des Rôles & Accès
+*   **🛡️ Administrateur** : Contrôle total, approbation des entrepreneurs et supervision globale.
+*   **👨‍💼 Entrepreneur** : Gestion autonome de ses stands, produits et suivi des ventes.
+*   **🛒 Client** : Panier dynamique, recherche intelligente et soumission de commandes.
+
+### 📦 Gestion du Catalogue
+*   **🏪 CRUD Stands** : Création et personnalisation d'espaces de vente thématiques.
+*   **🏷️ CRUD Produits** : Gestion universelle des articles (prix, stock, images).
+*   **🔍 Vitrine Intelligente** : Moteur de recherche et filtres par stand performants.
+
+### 💳 Commandes & Logistique
+*   **🛒 Panier Dynamique** : Gestion en session avec cumul automatique.
+*   **📑 Groupement Automatique** : Séparation des commandes par stand lors de la validation.
+*   **📈 Dashboard Stats** : Visualisation claire des revenus et de l'état des stocks.
 
 ---
 
-## 🛠️ Étapes d’implémentation
+## 🛠️ Stack Technique
 
-### 1. Migration de la table `users`
+*   **Framework** : [Laravel 11](https://laravel.com/)
+*   **UI** : Bootstrap 5 (Responsive Design)
+*   **Security** : Policies & Gates (Laravel Framework)
+*   **Database** : MySQL / MariaDB
 
-Ajout du champ `role` :
-```php
-$table->enum('role', ['admin', 'entrepreneur_en_attente', 'entrepreneur_approuve'])->default('entrepreneur_en_attente');
+---
 
+## 🚀 Installation Express
 
-[![committers.top badge](https://user-badge.committers.top/benin/Bellox1.svg)](https://user-badge.committers.top/benin/Bellox1)
+```bash
+composer install
+npm install && npm run build
+cp .env.example .env
+php artisan key:generate
+php artisan migrate --seed
+php artisan serve
+```
+
+---
+
+## 📄 Licence
+Ce projet est sous licence MIT. Développé par **BELLOX**.

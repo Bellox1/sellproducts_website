@@ -13,7 +13,8 @@ class CommandeSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('commandes')->insert([
+        $now = now();
+        $commandes = [
             // Commandes pour Jean Dupont (Boulangerie du Coin) - stand_id 1
             [
                 'stand_id' => 1,
@@ -129,7 +130,13 @@ class CommandeSeeder extends Seeder
                 ]]),
                 'date_commande' => Carbon::now(),
             ],
-        ]);
+        ];
+
+        foreach ($commandes as &$commande) {
+            $commande['created_at'] = $now;
+            $commande['updated_at'] = $now;
+        }
+
+        DB::table('commandes')->insert($commandes);
     }
 }
-

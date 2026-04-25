@@ -7,23 +7,26 @@
     <div class="vitrine-wrapper py-2">
         <div class="d-block d-md-none" style="height: 80px; width: 100%;"></div>
         <div class="d-none d-md-block" style="height: 30px; width: 100%;"></div>
-        
+
         <div class="px-3 px-md-5">
             <!-- Return & Stand Header Row -->
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 mb-md-5 gap-3 animate-in">
-                <a href="{{ route('vitrine.index') }}#stands" class="btn btn-glass-dark px-4 rounded-pill text-nowrap mb-2 mb-md-0">
+            <div
+                class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 mb-md-5 gap-3 animate-in">
+                <a href="{{ route('vitrine.index') }}#stands"
+                    class="btn btn-glass-dark px-4 rounded-pill text-nowrap mb-2 mb-md-0">
                     <i class="bi bi-arrow-left me-2"></i> Retour
                 </a>
 
                 <div class="d-flex align-items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#e74c3c"
-                        viewBox="0 0 24 24" class="me-3 flex-shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#e74c3c" viewBox="0 0 24 24"
+                        class="me-3 flex-shrink-0">
                         <path d="M12 2L1 8v8l11 6 11-6V8L12 2zm0 2.8L20 9v6l-8 4.4-8-4.4V9l8-4.2z" />
                         <path d="M12 12l-5-2.5V15l5 2.5 5-2.5V9.5L12 12z" />
                     </svg>
                     <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center">
                         <h1 class="h5 h4-md mb-0 fw-bold me-md-2" style="font-size: 1.25rem;">{{ $stand->nom_stand }}</h1>
-                        <span class="text-muted small mt-1 mt-md-0"><span class="d-none d-md-inline">|</span> Par <strong>{{ $stand->user->name }}</strong></span>
+                        <span class="text-muted small mt-1 mt-md-0"><span class="d-none d-md-inline">|</span> Par
+                            <strong>{{ $stand->user->name }}</strong></span>
                     </div>
                 </div>
             </div>
@@ -62,7 +65,7 @@
                                         <div class="d-flex justify-content-between align-items-start mb-3">
                                             <h4 class="fw-bold mb-0">{{ $produit->nom }}</h4>
                                             <div class="product-price-tag">
-                                                {{ number_format($produit->prix, 0, ',', ' ') }} <small>€</small>
+                                                {{ number_format($produit->prix, 0, ',', ' ') }} <small>FCFA</small>
                                             </div>
                                         </div>
                                         <p class="text-muted mb-4 fs-6">{{ Str::limit($produit->description, 120) }}</p>
@@ -115,7 +118,7 @@
                     @php
                         $videos = ['foule.mp4', 'bugger-boisson.mp4', 'pizza.mp4', 'chef-food.mp4'];
                     @endphp
-                    @foreach($videos as $index => $video)
+                    @foreach ($videos as $index => $video)
                         <div class="video-full-slide {{ $index === 0 ? 'active' : '' }}">
                             <div class="video-container-premium">
                                 <video autoplay muted loop playsinline class="cinematic-video">
@@ -136,102 +139,106 @@
     </div> <!-- End vitrine-wrapper -->
     <div class="mb-5 pb-5"></div> <!-- Footer spacer -->
 
-<style>
-    .video-scroll-container {
-        position: relative;
-        width: 100%;
-        overflow: visible;
-    }
-    
-    .sticky-video-wrapper {
-        position: sticky;
-        top: 0;
-        height: 100vh;
-        overflow: hidden;
-        background: #000;
-    }
-    
-    .video-horizontal-track {
-        height: 100%;
-        width: 100%; /* No longer 400% */
-        position: relative;
-    }
-    
-    .video-full-slide {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        opacity: 0;
-        transition: opacity 1s ease-in-out;
-        pointer-events: none;
-    }
-    
-    .video-full-slide.active {
-        opacity: 1;
-        pointer-events: auto;
-    }
-    
-    .video-container-premium {
-        width: 100%;
-        height: 100%;
-        border-radius: 0 !important;
-        overflow: hidden;
-        position: relative;
-        background: #000;
-    }
-    
-    .cinematic-video {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-    
-    .video-caption-overlay {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 60%;
-        background: linear-gradient(transparent, rgba(0,0,0,0.9));
-    }
-    .ls-2 { letter-spacing: 5px; }
-</style>
-
-<script>
-    window.addEventListener('scroll', () => {
-        const container = document.querySelector('.video-scroll-container');
-        const track = document.getElementById('videoTrack');
-        
-        if (container && track) {
-            const containerTop = container.offsetTop;
-            const containerHeight = container.offsetHeight;
-            const scrollY = window.scrollY;
-            
-            if (scrollY >= containerTop && scrollY <= containerTop + containerHeight - window.innerHeight) {
-                const scrolled = scrollY - containerTop;
-                const percentage = (scrolled / (containerHeight - window.innerHeight)) * 100;
-                const videoIndex = Math.round(percentage / 33.33);
-                
-                const slides = document.querySelectorAll('.video-full-slide');
-                slides.forEach((slide, index) => {
-                    if (index === videoIndex) {
-                        slide.classList.add('active');
-                    } else {
-                        slide.classList.remove('active');
-                    }
-                });
-            } else if (scrollY < containerTop) {
-                const slides = document.querySelectorAll('.video-full-slide');
-                slides.forEach((slide, index) => {
-                    if (index === 0) slide.classList.add('active');
-                    else slide.classList.remove('active');
-                });
-            }
+    <style>
+        .video-scroll-container {
+            position: relative;
+            width: 100%;
+            overflow: visible;
         }
-    });
-</script>
+
+        .sticky-video-wrapper {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .video-horizontal-track {
+            height: 100%;
+            width: 100%;
+            /* No longer 400% */
+            position: relative;
+        }
+
+        .video-full-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            pointer-events: none;
+        }
+
+        .video-full-slide.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .video-container-premium {
+            width: 100%;
+            height: 100%;
+            border-radius: 0 !important;
+            overflow: hidden;
+            position: relative;
+            background: #000;
+        }
+
+        .cinematic-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-caption-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+        }
+
+        .ls-2 {
+            letter-spacing: 5px;
+        }
+    </style>
+
+    <script>
+        window.addEventListener('scroll', () => {
+            const container = document.querySelector('.video-scroll-container');
+            const track = document.getElementById('videoTrack');
+
+            if (container && track) {
+                const containerTop = container.offsetTop;
+                const containerHeight = container.offsetHeight;
+                const scrollY = window.scrollY;
+
+                if (scrollY >= containerTop && scrollY <= containerTop + containerHeight - window.innerHeight) {
+                    const scrolled = scrollY - containerTop;
+                    const percentage = (scrolled / (containerHeight - window.innerHeight)) * 100;
+                    const videoIndex = Math.round(percentage / 33.33);
+
+                    const slides = document.querySelectorAll('.video-full-slide');
+                    slides.forEach((slide, index) => {
+                        if (index === videoIndex) {
+                            slide.classList.add('active');
+                        } else {
+                            slide.classList.remove('active');
+                        }
+                    });
+                } else if (scrollY < containerTop) {
+                    const slides = document.querySelectorAll('.video-full-slide');
+                    slides.forEach((slide, index) => {
+                        if (index === 0) slide.classList.add('active');
+                        else slide.classList.remove('active');
+                    });
+                }
+            }
+        });
+    </script>
 
     <style>
         /* Premium Stand View Styles */
@@ -260,9 +267,11 @@
             .stands-masonry-grid {
                 grid-template-columns: 1fr;
             }
+
             .vitrine-wrapper {
                 padding: 0 !important;
             }
+
             .video-scroll-container {
                 display: none;
             }
@@ -293,6 +302,23 @@
             font-size: 1.2rem;
         }
 
+        .btn-qty {
+            background: #000 !important;
+            color: #fff !important;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-qty:hover {
+            background: #333 !important;
+            transform: scale(1.1);
+        }
+
         .add-btn-premium:hover {
             background: #333;
             transform: translateY(-2px);
@@ -313,6 +339,7 @@
                 opacity: 0;
                 transform: translateX(80px) translateY(10px) rotate(2deg);
             }
+
             to {
                 opacity: 1;
                 transform: translateX(0) translateY(0) rotate(0deg);
@@ -320,31 +347,31 @@
         }
     </style>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        document.querySelectorAll('.animate-card').forEach((card, index) => {
-            card.style.animationDelay = `${index * 0.2}s`;
-        });
-        
-        const navbar = document.querySelector('.navbar');
-        const videoSection = document.querySelector('.video-scroll-container');
-        
-        window.addEventListener('scroll', () => {
-            if (navbar && videoSection) {
-                if (window.getComputedStyle(videoSection).display === 'none') {
-                    navbar.style.transform = 'translateY(0)';
-                    return;
-                }
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.animate-card').forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.2}s`;
+            });
 
-                const videoTop = videoSection.offsetTop;
-                if (window.scrollY > videoTop - 100) {
-                    navbar.style.transform = 'translateY(-100%)';
-                    navbar.style.transition = 'transform 0.5s ease';
-                } else {
-                    navbar.style.transform = 'translateY(0)';
+            const navbar = document.querySelector('.navbar');
+            const videoSection = document.querySelector('.video-scroll-container');
+
+            window.addEventListener('scroll', () => {
+                if (navbar && videoSection) {
+                    if (window.getComputedStyle(videoSection).display === 'none') {
+                        navbar.style.transform = 'translateY(0)';
+                        return;
+                    }
+
+                    const videoTop = videoSection.offsetTop;
+                    if (window.scrollY > videoTop - 100) {
+                        navbar.style.transform = 'translateY(-100%)';
+                        navbar.style.transition = 'transform 0.5s ease';
+                    } else {
+                        navbar.style.transform = 'translateY(0)';
+                    }
                 }
-            }
+            });
         });
-    });
-</script>
+    </script>
 @endsection
